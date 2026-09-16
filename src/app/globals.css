@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+@theme {
+  /* Bảng màu rút từ tấm poster: giấy kem, mực nâu, nhũ vàng, tím khói */
+  --color-paper: #f7f4ee;
+  --color-paper-deep: #ece6db;
+  --color-paper-edge: #e2d9c9;
+  --color-ink: #2c2724;
+  --color-ink-soft: #6b625a;
+  --color-gold: #b8944f;
+  --color-gold-light: #d4b674;
+  --color-mauve: #8e7182;
+  --color-tape: #e3d5b8;
+
+  --font-display: var(--font-playfair), Georgia, serif;
+  --font-body: var(--font-be-vietnam), system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  /* Vân giấy: nhiễu nhẹ + vệt sáng, không dùng ảnh nền nên tải cực nhanh */
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255, 253, 248, 0.9), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 60%, rgba(232, 220, 196, 0.35), transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@layer components {
+  /* Chữ nhũ chuyển sắc như tiêu đề poster */
+  .text-foil {
+    background-image: linear-gradient(
+      100deg,
+      #b8944f 0%,
+      #d9c087 22%,
+      #8e7182 48%,
+      #c9a961 74%,
+      #a8854a 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Mép giấy xé — dùng mask nên co giãn theo mọi bề rộng */
+  .torn-top {
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='24' preserveAspectRatio='none'%3E%3Cpath d='M0 24V8c40-5 70 3 110 0s60-8 100-5 70 9 112 6 64-9 104-7 72 10 112 7 66-9 106-6 70 8 110 5 62-8 102-5 74 9 114 6 66-8 106-5 24 4 24 4v16z' fill='%23000'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='24' preserveAspectRatio='none'%3E%3Cpath d='M0 24V8c40-5 70 3 110 0s60-8 100-5 70 9 112 6 64-9 104-7 72 10 112 7 66-9 106-6 70 8 110 5 62-8 102-5 74 9 114 6 66-8 106-5 24 4 24 4v16z' fill='%23000'/%3E%3C/svg%3E");
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+  }
+
+  /* Miếng băng keo washi dán góc ảnh */
+  .tape {
+    position: absolute;
+    width: 92px;
+    height: 26px;
+    background: linear-gradient(
+      175deg,
+      rgba(227, 213, 184, 0.92),
+      rgba(211, 193, 156, 0.86)
+    );
+    box-shadow: 0 1px 3px rgba(44, 39, 36, 0.18);
+    /* Hai đầu cắt răng cưa nhẹ cho giống băng keo thật */
+    clip-path: polygon(3% 0, 97% 4%, 100% 96%, 0 100%);
+  }
+}
+
+/* Số đếm ngược lật lên mỗi khi đổi giá trị */
+@keyframes roll-in {
+  from {
+    transform: translateY(55%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.roll-in {
+  animation: roll-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
