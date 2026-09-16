@@ -65,8 +65,8 @@ export function Envelope({ onOpen }: { onOpen: () => void }) {
               animate={opening ? { y: "-215%", opacity: 1 } : { y: 0, opacity: 0 }}
               transition={{ duration: 0.9, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
             >
-              <p className="font-display text-xl text-foil sm:text-3xl">
-                {content.graduateName}
+              <p className="text-foil font-display text-xl tracking-[0.12em] uppercase sm:text-3xl">
+                {content.shortName}
               </p>
             </motion.div>
 

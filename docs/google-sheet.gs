@@ -18,8 +18,8 @@ function doPost(e) {
 
     // First run: lay down the header row
     if (sheet.getLastRow() === 0) {
-      sheet.appendRow(['Timestamp', 'Name', 'Attending', 'Message']);
-      sheet.getRange(1, 1, 1, 4).setFontWeight('bold');
+      sheet.appendRow(['Timestamp', 'Name', 'Attending', 'Time slots', 'Message']);
+      sheet.getRange(1, 1, 1, 5).setFontWeight('bold');
       sheet.setFrozenRows(1);
     }
 
@@ -28,6 +28,7 @@ function doPost(e) {
       new Date(),
       data.name || '',
       data.attending || '',
+      data.slots || '',
       data.message || '',
     ]);
 

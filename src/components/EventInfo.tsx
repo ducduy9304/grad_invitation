@@ -10,11 +10,13 @@ const cards = [
   {
     icon: "⏰",
     title: "Giờ",
-    body: [content.time.range, content.time.note],
+    body: [content.time.range],
   },
   {
     icon: "📍",
     title: "Địa điểm",
+    /** Stands out above the address, guests look for the floor first. */
+    lead: content.venue.floor,
     body: [content.venue.name, ...content.venue.lines],
     href: content.venue.mapsUrl,
   },
@@ -44,6 +46,7 @@ export function EventInfo() {
                 {card.title}
               </h3>
               <div className="mt-4 space-y-1.5 text-base leading-relaxed text-ink">
+                {card.lead && <p className="font-semibold">{card.lead}</p>}
                 {card.body.map((line) => (
                   <p key={line}>{line}</p>
                 ))}

@@ -21,9 +21,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Thiếu tên" }, { status: 400 });
   }
 
+  // Guests may tick several time slots; flatten them into one cell
+  const slots = Array.isArray(body.slots)
+    ? body.slots.map((s) => String(s)).filter(Boolean).join(", ")
+    : String(body.slots ?? "");
+
   const payload = {
     name: name.slice(0, 80),
     attending: String(body.attending ?? "").slice(0, 80),
+    slots: slots.slice(0, 200),
     message: String(body.message ?? "").slice(0, 500),
     submittedAt: new Date().toISOString(),
   };

@@ -18,7 +18,14 @@ export function Rsvp() {
     if (status === "sending") return;
     setStatus("sending");
 
-    const data = Object.fromEntries(new FormData(event.currentTarget));
+    const form = new FormData(event.currentTarget);
+    const data = {
+      name: form.get("name"),
+      attending: form.get("attending"),
+      // Repeated field: getAll, because entries() would keep only the last tick
+      slots: form.getAll("slots"),
+      message: form.get("message"),
+    };
 
     try {
       const res = await fetch("/api/rsvp", {
@@ -103,6 +110,28 @@ export function Rsvp() {
                     className="h-4.5 w-4.5 accent-[#b8944f]"
                   />
                   {option}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <fieldset className="mt-7">
+            <legend className="text-sm tracking-[0.18em] text-ink uppercase">
+              {content.rsvp.slotLabel}
+            </legend>
+            <div className="mt-3 space-y-2">
+              {content.rsvp.slotOptions.map((slot) => (
+                <label
+                  key={slot}
+                  className="flex cursor-pointer items-center gap-3 text-base text-ink"
+                >
+                  <input
+                    type="checkbox"
+                    name="slots"
+                    value={slot}
+                    className="h-4.5 w-4.5 accent-[#b8944f]"
+                  />
+                  {slot}
                 </label>
               ))}
             </div>

@@ -11,8 +11,8 @@ export function Footer() {
         <p className="text-foil mt-5 font-display text-2xl">
           {content.footer.signature}
         </p>
-        <p className="mt-1 font-display text-xl tracking-[0.2em] text-ink">
-          {content.graduateName}
+        <p className="mt-2 text-base leading-relaxed text-ink">
+          {content.footer.closing}
         </p>
       </Reveal>
     </footer>

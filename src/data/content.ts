@@ -6,8 +6,10 @@
  */
 
 export const content = {
-  /** Largest name shown in the hero, also the wax-seal initial. */
+  /** Full name: page title, footer, and the wax-seal initial. */
   graduateName: "Nguyễn Ngọc Huyền Trân",
+  /** Short name, shown on the card that slides out of the envelope. */
+  shortName: "Huyền Trân",
   /** Small line above the title. */
   overline: "Em tốt nghiệp rùi,\ntới chơi với em nhaa!",
   /** Poster-style title. \n forces the line break. */
@@ -28,11 +30,12 @@ export const content = {
   },
 
   time: {
-    range: "15:30 – 16:30",
-    note: "Khách mời có mặt trước 15 phút nha",
+    range: "15h30 – 17h",
   },
 
   venue: {
+    /** Rendered in bold above the venue name. */
+    floor: "Tầng trệt",
     name: "Cơ sở A – UEH",
     lines: ["59C Nguyễn Đình Chiểu", "Phường Xuân Hòa", "TP. Hồ Chí Minh"],
     mapsUrl:
@@ -56,9 +59,9 @@ export const content = {
 
   /** Parking options around the venue. */
   parking: {
-    heading: "Chỗ gửi xe",
+    heading: "🛵 Bãi gửi xe",
     intro:
-      "Khu vực quanh trường hơi khó gửi xe, anh chị em tham khảo mấy chỗ này nha",
+      "Khu vực quanh trường hơi khó gửi xe, anh/chị/em tham khảo mấy chỗ này nhaa",
     spots: [
       {
         rank: "Ưu tiên 1",
@@ -103,6 +106,9 @@ export const content = {
     namePlaceholder: "Mình là...",
     attendingLabel: "Người đẹp sẽ đến chung vui cùng Trân đúng hông?",
     attendingOptions: ["Chắc chắn rùi", "Hông được rùi"],
+    /** Guests can tick more than one slot. */
+    slotLabel: "Người đẹp ghé được khung giờ nào? (chọn nhiều cũng được)",
+    slotOptions: ["15h30 – 16h", "16h – 16h30", "16h30 – 17h"],
     messageLabel: "Nhắn gì đó cho Trân nè",
     messagePlaceholder: "Tuỳ người đẹp, hông bắt buộc",
     submit: "Gửi tín hiệu tới Trân nha",
@@ -113,8 +119,9 @@ export const content = {
   },
 
   footer: {
-    thanks: "Cảm ơn mọi người đã đến chung vui cùng Nguyễn Ngọc Huyền Trân 🎓",
-    signature: "Hẹn gặp ở lễ tốt nghiệp",
+    thanks: "Cảm ơn mọi người đã đến chung vui cùng bé Trân 🎓",
+    signature: "See u soon",
+    closing: "Nhớ đến á nha, thân lắm mới mời á",
   },
 
   /** Background music. Drop an mp3 into public/audio/ and set the path. null hides the button. */
