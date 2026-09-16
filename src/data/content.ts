@@ -107,7 +107,7 @@ export const content = {
     attendingLabel: "Người đẹp sẽ đến chung vui cùng Trân đúng hông?",
     attendingOptions: ["Chắc chắn rùi", "Hông được rùi"],
     /** Guests can tick more than one slot. */
-    slotLabel: "Người đẹp ghé được khung giờ nào zaa? (chọn nhiều cũng oki",
+    slotLabel: "Người đẹp ghé được khung giờ nào zaa? (chọn nhiều cũng oki)",
     slotOptions: ["15h30 – 16h", "16h – 16h30", "16h30 – 17h"],
     messageLabel: "Nhắn gì đó cho Trân hongg",
     messagePlaceholder: "Tuỳ người đẹp, hông bắt buộc",
@@ -118,8 +118,17 @@ export const content = {
     doneNote: "Cảm ơn người đẹp nhiều. Hẹn gặp vào",
   },
 
+  /** The personalised card drawn after someone RSVPs. */
+  card: {
+    invitePrefix: "Thương mời",
+    saveLabel: "Lưu thiệp về máy",
+    mapLabel: "Xem đường đi",
+    /** iOS ignores the download attribute, so guests there save by long-press. */
+    longPressHint: "Trên điện thoại: nhấn giữ vào thiệp rồi chọn Lưu ảnh",
+  },
+
   footer: {
-    thanks: "Cảm ơn mọi người đã đến chung vui cùng bé Trân 🎓",
+    thanks: "Cảm ơn mọi người đã đến chung vui cùng Trân 🎓",
     signature: "See u soon",
     closing: "Nhớ đến á nha, thân lắm mới mời áa hihi 😇",
   },

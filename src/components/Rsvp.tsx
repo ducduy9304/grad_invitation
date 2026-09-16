@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "motion/react";
 import { content } from "@/data/content";
+import { GuestCard } from "./GuestCard";
 import { Reveal } from "./Reveal";
 
 type Status = "idle" | "sending" | "sent" | "error";
@@ -12,6 +13,8 @@ const field =
 
 export function Rsvp() {
   const [status, setStatus] = useState<Status>("idle");
+  // Kept so the card can be addressed to whoever just replied
+  const [guestName, setGuestName] = useState("");
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -19,8 +22,9 @@ export function Rsvp() {
     setStatus("sending");
 
     const form = new FormData(event.currentTarget);
+    const name = String(form.get("name") ?? "").trim();
     const data = {
-      name: form.get("name"),
+      name,
       attending: form.get("attending"),
       // Repeated field: getAll, because entries() would keep only the last tick
       slots: form.getAll("slots"),
@@ -34,6 +38,7 @@ export function Rsvp() {
         body: JSON.stringify(data),
       });
       if (!res.ok) throw new Error(await res.text());
+      setGuestName(name);
       setStatus("sent");
     } catch {
       setStatus("error");
@@ -55,6 +60,7 @@ export function Rsvp() {
           <p className="mt-3 text-base text-ink">
             {content.rsvp.doneNote} {content.date.full}.
           </p>
+          <GuestCard guestName={guestName} />
         </motion.div>
       </section>
     );
