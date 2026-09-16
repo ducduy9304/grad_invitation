@@ -85,7 +85,7 @@ export function Polaroid({
       )}
 
       {caption && (
-        <figcaption className="absolute inset-x-0 bottom-3 text-center font-display text-base tracking-wide text-ink">
+        <figcaption className="absolute inset-x-0 bottom-3 text-center text-sm tracking-wide text-ink">
           {caption}
         </figcaption>
       )}

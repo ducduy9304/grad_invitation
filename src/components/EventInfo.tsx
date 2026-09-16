@@ -42,7 +42,7 @@ export function EventInfo() {
               <span className="text-2xl" aria-hidden>
                 {card.icon}
               </span>
-              <h3 className="mt-3 font-display text-2xl tracking-[0.15em] text-foil uppercase">
+              <h3 className="mt-3 text-base font-semibold tracking-[0.2em] text-foil uppercase">
                 {card.title}
               </h3>
               <div className="mt-4 space-y-1.5 text-base leading-relaxed text-ink">

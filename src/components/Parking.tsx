@@ -29,7 +29,7 @@ export function Parking() {
                 <span className="text-xs font-medium tracking-[0.18em] text-gold uppercase">
                   {spot.rank}
                 </span>
-                <span className="mt-2 font-display text-xl leading-snug text-ink">
+                <span className="mt-2 text-lg font-semibold leading-snug text-ink">
                   {spot.name}
                 </span>
                 {spot.address && (

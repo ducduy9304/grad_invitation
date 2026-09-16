@@ -1,5 +1,22 @@
 @import "tailwindcss";
 
+/*
+ * Type system — two families, one rule.
+ *
+ *   --font-display (Playfair, serif)
+ *       Section headings, proper names, and numerals that act as ornament:
+ *       the poster title, the foil name lines, the big day numeral, the
+ *       countdown digits, the date strip.
+ *
+ *   --font-body (Be Vietnam Pro, sans), the default
+ *       Everything a guest reads for information: body copy, small-caps
+ *       labels, card titles, buttons and every form control.
+ *
+ * The point is that one kind of element never changes family between
+ * sections: every button is sans, every small-caps label is sans, so no
+ * single block ever looks like it was set by two different hands.
+ */
+
 @theme {
   /* Bảng màu rút từ tấm poster: giấy kem, mực nâu, nhũ vàng, tím khói */
   --color-paper: #f7f4ee;

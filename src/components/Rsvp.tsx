@@ -157,7 +157,7 @@ export function Rsvp() {
           <button
             type="submit"
             disabled={status === "sending"}
-            className="mt-8 w-full rounded-full bg-gradient-to-r from-gold to-gold-light py-3.5 font-display text-lg tracking-wide text-white shadow-sm transition hover:opacity-90 disabled:opacity-60"
+            className="mt-8 w-full rounded-full bg-gradient-to-r from-gold to-gold-light py-3.5 text-base font-medium tracking-[0.05em] text-white shadow-sm transition hover:opacity-90 disabled:opacity-60"
           >
             {status === "sending" ? content.rsvp.submitting : content.rsvp.submit}
           </button>
