@@ -109,6 +109,12 @@ export const content = {
     /** Guests can tick more than one slot. */
     slotLabel: "Người đẹp ghé được khung giờ nào zaa? (chọn nhiều cũng oki)",
     slotOptions: ["15h30 – 16h", "16h – 16h30", "16h30 – 17h"],
+    /**
+     * Where they plan to park. The options are the parking spots above plus
+     * these, so the list never drifts out of sync with the parking section.
+     */
+    parkingLabel: "Người đẹp tính gửi xe ở đâu?",
+    parkingExtraOptions: ["Chưa biết nữa, tới rồi tính", "Mình không đi xe"],
     messageLabel: "Nhắn gì đó cho Trân hongg",
     messagePlaceholder: "Tuỳ người đẹp, hông bắt buộc",
     submit: "Gửi tín hiệu tới Trân nhaa",

@@ -30,6 +30,7 @@ export async function POST(request: Request) {
     name: name.slice(0, 80),
     attending: String(body.attending ?? "").slice(0, 80),
     slots: slots.slice(0, 200),
+    parking: String(body.parking ?? "").slice(0, 120),
     message: String(body.message ?? "").slice(0, 500),
     submittedAt: new Date().toISOString(),
   };

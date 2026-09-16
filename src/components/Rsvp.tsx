@@ -8,6 +8,12 @@ import { Reveal } from "./Reveal";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
+/** Spots from the parking section, plus the two catch-all answers. */
+const parkingOptions = [
+  ...content.parking.spots.map((spot) => spot.name),
+  ...content.rsvp.parkingExtraOptions,
+];
+
 const field =
   "w-full border-b border-ink/20 bg-transparent px-1 py-2.5 text-base text-ink outline-none transition focus:border-gold placeholder:text-ink/35";
 
@@ -28,6 +34,7 @@ export function Rsvp() {
       attending: form.get("attending"),
       // Repeated field: getAll, because entries() would keep only the last tick
       slots: form.getAll("slots"),
+      parking: form.get("parking"),
       message: form.get("message"),
     };
 
@@ -138,6 +145,28 @@ export function Rsvp() {
                     className="h-4.5 w-4.5 accent-[#b8944f]"
                   />
                   {slot}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <fieldset className="mt-7">
+            <legend className="text-sm tracking-[0.18em] text-ink uppercase">
+              {content.rsvp.parkingLabel}
+            </legend>
+            <div className="mt-3 space-y-2">
+              {parkingOptions.map((spot) => (
+                <label
+                  key={spot}
+                  className="flex cursor-pointer items-start gap-3 text-base text-ink"
+                >
+                  <input
+                    type="radio"
+                    name="parking"
+                    value={spot}
+                    className="mt-1.5 h-4.5 w-4.5 shrink-0 accent-[#b8944f]"
+                  />
+                  {spot}
                 </label>
               ))}
             </div>
