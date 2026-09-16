@@ -143,10 +143,17 @@ export function Rsvp() {
             </span>
             <textarea
               name="message"
-              rows={3}
+              rows={1}
               maxLength={500}
               placeholder={content.rsvp.messagePlaceholder}
-              className={`${field} mt-2 resize-none`}
+              // Starts one line tall and grows with the text. overflow-hidden
+              // keeps scrollHeight honest, otherwise it stops at the box size.
+              onInput={(event) => {
+                const el = event.currentTarget;
+                el.style.height = "auto";
+                el.style.height = `${el.scrollHeight}px`;
+              }}
+              className={`${field} mt-2 resize-none overflow-hidden`}
             />
           </label>
 
