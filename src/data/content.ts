@@ -89,7 +89,7 @@ export const content = {
       },
     ],
     note:
-      "Ngoài ra khu vực vòng quanh Hồ Con Rùa cũng có các bãi xe vãng lai, anh chị có thể tham khảo ạ. Giá gửi xe trung bình khoảng 10.000đ.",
+      "Ngoài ra khu vực vòng quanh Hồ Con Rùa cũng có các bãi xe vãng lai, anh/chị có thể tham khảo ạ. Giá gửi xe trung bình khoảng 10.000đ.",
   },
 
   /**
@@ -114,14 +114,14 @@ export const content = {
     submit: "Gửi tín hiệu tới Trân nha",
     submitting: "Đang gửi...",
     errorText: "Gửi chưa được, người đẹp thử lại giúp Trân nha.",
-    doneTitle: "Trân nhận được rồi nha!",
+    doneTitle: "Trân nhận được rồi nhaa!",
     doneNote: "Cảm ơn người đẹp nhiều. Hẹn gặp vào",
   },
 
   footer: {
     thanks: "Cảm ơn mọi người đã đến chung vui cùng bé Trân 🎓",
     signature: "See u soon",
-    closing: "Nhớ đến á nha, thân lắm mới mời á",
+    closing: "Nhớ đến á nha, thân lắm mới mời áa",
   },
 
   /** Background music. Drop an mp3 into public/audio/ and set the path. null hides the button. */

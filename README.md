@@ -3,7 +3,7 @@
 A one-page invitation site. Cream paper, washi tape and foil lettering, built
 with Next.js 16, Tailwind v4 and Motion, deployed on Vercel.
 
-The page is in Vietnamese; the code and docs are in English.
+
 
 ## Run locally
 
@@ -71,6 +71,15 @@ cp .env.local.example .env.local
 
 The URL never reaches the guest's browser. The form posts to `/api/rsvp` on
 this site, and only the server calls Apps Script.
+
+The sheet formats itself as rows arrive: a gold header, sensible column
+widths, and each row tinted by whether the guest is coming. Which replies
+count as a decline is decided by `DECLINE_WORDS` at the top of the script —
+edit that list if you reword `rsvp.attendingOptions`.
+
+Changing a colour or width afterwards does not touch existing rows. Pick
+`formatAll` from the function dropdown in the editor and press **Run** to
+restyle the whole sheet in place.
 
 > **Editing the script later**: a save is not enough. Go to **Deploy → Manage
 > deployments → edit → Version: New version**, otherwise `/exec` keeps running
