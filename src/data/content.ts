@@ -42,6 +42,19 @@ export const content = {
       "https://www.google.com/maps/search/?api=1&query=59C+Nguy%E1%BB%85n+%C4%90%C3%ACnh+Chi%E1%BB%83u+UEH+H%E1%BB%93+Ch%C3%AD+Minh",
   },
 
+  /**
+   * The last window happens somewhere else. When a guest picks it, their card
+   * carries this address instead of the ceremony one, and the directions
+   * button follows suit.
+   */
+  altVenue: {
+    triggerSlot: "16h30 – 17h",
+    name: "Hồ Con Rùa",
+    lines: ["Công trường Quốc tế, Phường Xuân Hòa, TP. Hồ Chí Minh"],
+    mapsUrl:
+      "https://www.google.com/maps/search/?api=1&query=H%E1%BB%93+Con+R%C3%B9a+TP+H%E1%BB%93+Ch%C3%AD+Minh",
+  },
+
   /** Shown as the fourth card in the ceremony details. */
   contact: {
     label: "Liên hệ",

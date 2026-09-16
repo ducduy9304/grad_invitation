@@ -134,6 +134,7 @@ async function draw(
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
 
+  const movedVenue = slots.includes(content.altVenue.triggerSlot);
   const H = BASE_H + (slots.length ? SLOT_BLOCK : 0);
   canvas.width = W;
   canvas.height = H;
@@ -227,15 +228,24 @@ async function draw(
     centred(ctx, slots.join("  ·  "), vy, 30, SANS, { tracking: 1 });
   }
 
-  // Venue
+  // Venue. Guests coming for the last window are headed elsewhere.
   vy += 76;
-  centredRuns(ctx, vy, [
-    { text: "📍 ", font: `26px ${SANS}` },
-    { text: content.venue.floor, font: `600 26px ${SANS}` },
-    { text: `, ${content.venue.name}`, font: `26px ${SANS}` },
-  ]);
-  vy += 42;
-  centred(ctx, content.venue.lines.join(", "), vy, 26, SANS, { tracking: 1 });
+  if (movedVenue) {
+    centredRuns(ctx, vy, [
+      { text: "📍 ", font: `26px ${SANS}` },
+      { text: content.altVenue.name, font: `600 26px ${SANS}` },
+    ]);
+    vy += 42;
+    centred(ctx, content.altVenue.lines.join(", "), vy, 26, SANS, { tracking: 1 });
+  } else {
+    centredRuns(ctx, vy, [
+      { text: "📍 ", font: `26px ${SANS}` },
+      { text: content.venue.floor, font: `600 26px ${SANS}` },
+      { text: `, ${content.venue.name}`, font: `26px ${SANS}` },
+    ]);
+    vy += 42;
+    centred(ctx, content.venue.lines.join(", "), vy, 26, SANS, { tracking: 1 });
+  }
 
   // Numbers to call, so a saved picture is still useful on the day
   vy += 74;
@@ -273,6 +283,7 @@ export function GuestCard({
   guestName: string;
   slots: string[];
 }) {
+  const movedVenue = slots.includes(content.altVenue.triggerSlot);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   /*
    * The PNG is prepared as soon as the card is drawn, not when the button is
@@ -353,7 +364,7 @@ export function GuestCard({
           {content.card.saveLabel}
         </button>
         <a
-          href={content.venue.mapsUrl}
+          href={movedVenue ? content.altVenue.mapsUrl : content.venue.mapsUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="rounded-full border border-gold/50 px-6 py-3 text-center text-base text-gold transition hover:bg-gold hover:text-white"
