@@ -6,12 +6,10 @@
  * content, and each row tinted by whether the guest is coming.
  */
 
-// Parking sits last on purpose: appending a column leaves rows written by
-// an earlier version still lined up with their headers.
-var HEADERS = ['Timestamp', 'Name', 'Attending', 'Time slots', 'Message', 'Parking'];
+var HEADERS = ['Timestamp', 'Name', 'Attending', 'Time slots', 'Message'];
 
 /** Pixel widths per column, in the same order as HEADERS. */
-var WIDTHS = [150, 190, 150, 210, 340, 230];
+var WIDTHS = [150, 190, 150, 210, 340];
 
 var COLOURS = {
   header: '#b8944f',      // gold, same as the invitation
@@ -50,7 +48,6 @@ function doPost(e) {
       data.attending || '',
       data.slots || '',
       data.message || '',
-      data.parking || '',
     ]);
 
     styleRow_(sheet, sheet.getLastRow());
@@ -131,7 +128,7 @@ function styleRow_(sheet, row) {
   sheet.getRange(row, 2).setFontWeight('bold');
 
   // Long messages wrap instead of spilling over the next column
-  sheet.getRange(row, 4, 1, 3).setWrap(true);
+  sheet.getRange(row, 4, 1, 2).setWrap(true);
 }
 
 function json(obj) {
