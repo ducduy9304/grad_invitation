@@ -73,6 +73,16 @@ body {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+
+    /*
+     * Uppercase Vietnamese stacks two marks on one letter, and Ề or Ờ reach
+     * well above the line box. background-clip:text only paints inside the
+     * element's background box, so the upper mark was being dropped and
+     * "HUYỀN" rendered as "HUYÊN". Grow the box, then pull the same amount
+     * back off the margin so nothing moves.
+     */
+    padding-block: 0.4em;
+    margin-block: -0.4em;
   }
 
   /* Mép giấy xé — dùng mask nên co giãn theo mọi bề rộng */
