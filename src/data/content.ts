@@ -11,11 +11,11 @@ export const content = {
   /** Short name, shown on the card that slides out of the envelope. */
   shortName: "Huyền Trân",
   /** Small line above the title. */
-  overline: "Bé tốt nghiệp rùi,\ntới chơi với bé nhaa!",
+  overline: "Trân tốt nghiệp rùi,\ntới chơi với Trân nhaa!",
   /** Poster-style title. \n forces the line break. */
   title: "Tran’s Graduation\nInvitation",
   /** Invitation line. One shared link for everyone, so it is addressed generally. */
-  inviteLine: "Thương mời Anh Chị Em, Bạn dì",
+  inviteLine: "Thương mời Anh Chị Em Bạn dì",
   inviteName: "thân thương",
 
   /** Ceremony start, used by the countdown. ISO format; +07:00 is Vietnam time. */
@@ -107,11 +107,11 @@ export const content = {
     attendingLabel: "Người đẹp sẽ đến chung vui cùng Trân đúng hông?",
     attendingOptions: ["Chắc chắn rùi", "Hông được rùi"],
     /** Guests can tick more than one slot. */
-    slotLabel: "Người đẹp ghé được khung giờ nào? (chọn nhiều cũng được)",
+    slotLabel: "Người đẹp ghé được khung giờ nào zaa? (chọn nhiều cũng oki",
     slotOptions: ["15h30 – 16h", "16h – 16h30", "16h30 – 17h"],
-    messageLabel: "Nhắn gì đó cho Trân nè",
+    messageLabel: "Nhắn gì đó cho Trân hongg",
     messagePlaceholder: "Tuỳ người đẹp, hông bắt buộc",
-    submit: "Gửi tín hiệu tới Trân nha",
+    submit: "Gửi tín hiệu tới Trân nhaa",
     submitting: "Đang gửi...",
     errorText: "Gửi chưa được, người đẹp thử lại giúp Trân nha.",
     doneTitle: "Trân nhận được rồi nhaa!",
@@ -121,7 +121,7 @@ export const content = {
   footer: {
     thanks: "Cảm ơn mọi người đã đến chung vui cùng bé Trân 🎓",
     signature: "See u soon",
-    closing: "Nhớ đến á nha, thân lắm mới mời áa",
+    closing: "Nhớ đến á nha, thân lắm mới mời áa hihi 😇",
   },
 
   /** Background music. Drop an mp3 into public/audio/ and set the path. null hides the button. */
