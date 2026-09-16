@@ -16,7 +16,7 @@ import { content } from "@/data/content";
 const W = 1080;
 // Tall enough that the last line of the address clears the bottom edge:
 // the drawing is a fixed sequence, so content always ends around y=1433.
-const BASE_H = 1540;
+const BASE_H = 1662;
 /** Extra room when the guest picked at least one time slot. */
 const SLOT_BLOCK = 104;
 
@@ -214,6 +214,22 @@ async function draw(
   });
   vy += 42;
   centred(ctx, content.venue.lines.join(", "), vy, 26, SANS, { tracking: 1 });
+
+  // Numbers to call, so a saved picture is still useful on the day
+  vy += 74;
+  centred(ctx, content.card.contactHeading.toUpperCase(), vy, 24, SANS, {
+    tracking: 6,
+    fill: "#b8944f",
+  });
+  vy += 46;
+  centred(
+    ctx,
+    content.contact.people.map((p) => `${p.name} ${p.phone}`).join("   ·   "),
+    vy,
+    27,
+    SANS,
+    { tracking: 1 },
+  );
 }
 
 function loadImage(src: string) {

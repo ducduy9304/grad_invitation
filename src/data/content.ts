@@ -118,7 +118,11 @@ export const content = {
     attendingOptions: ["Chắc chắn rùi", "Hông được rùi"],
     /** Guests can tick more than one slot. */
     slotLabel: "Người đẹp ghé được khung giờ nào zaa? (chọn nhiều cũng oki)",
-    slotOptions: ["15h30 – 16h", "16h – 16h30", "16h30 – 17h"],
+    slotOptions: [
+      "15h30 – 16h",
+      "16h – 16h30",
+      "16h30 – 17h (ở Hồ Con Rùa)",
+    ],
     messageLabel: "Nhắn gì đó cho Trân hongg",
     messagePlaceholder: "Tuỳ người đẹp, hông bắt buộc",
     submit: "Gửi tín hiệu tới Trân nhaa",
@@ -132,6 +136,7 @@ export const content = {
   card: {
     invitePrefix: "Thương mời",
     slotsHeading: "Khung giờ bạn ghé",
+    contactHeading: "Liên hệ",
     saveLabel: "Lưu thiệp về máy",
     mapLabel: "Xem đường đi",
     /** Shown where the share sheet is available: one tap reaches Photos. */
