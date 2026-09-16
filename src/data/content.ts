@@ -134,8 +134,10 @@ export const content = {
     slotsHeading: "Khung giờ bạn ghé",
     saveLabel: "Lưu thiệp về máy",
     mapLabel: "Xem đường đi",
-    /** iOS ignores the download attribute, so guests there save by long-press. */
-    longPressHint: "Trên điện thoại: nhấn giữ vào thiệp rồi chọn Lưu ảnh",
+    /** Shown where the share sheet is available: one tap reaches Photos. */
+    shareHint: "Bấm nút rồi chọn “Lưu ảnh” là thiệp vào album của máy",
+    /** Fallback hint for browsers without the share sheet. */
+    longPressHint: "Hoặc nhấn giữ vào thiệp rồi chọn Lưu ảnh",
   },
 
   footer: {

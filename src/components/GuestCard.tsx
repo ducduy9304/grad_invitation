@@ -233,7 +233,14 @@ export function GuestCard({
   slots: string[];
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  /*
+   * The PNG is prepared as soon as the card is drawn, not when the button is
+   * pressed. navigator.share() has to run inside the click's user gesture,
+   * and awaiting toBlob() first would spend that gesture on Safari.
+   */
+  const fileRef = useRef<File | null>(null);
   const [ready, setReady] = useState(false);
+  const [canShare, setCanShare] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -242,25 +249,47 @@ export function GuestCard({
       await document.fonts.ready;
       if (cancelled || !canvasRef.current) return;
       await draw(canvasRef.current, guestName, slots);
-      if (!cancelled) setReady(true);
+      if (cancelled) return;
+
+      const blob = await new Promise<Blob | null>((resolve) =>
+        canvasRef.current?.toBlob(resolve, "image/png"),
+      );
+      if (cancelled || !blob) return;
+
+      const file = new File([blob], `thiep-moi-${slug(guestName)}.png`, {
+        type: "image/png",
+      });
+      fileRef.current = file;
+      setCanShare(Boolean(navigator.canShare?.({ files: [file] })));
+      setReady(true);
     })();
     return () => {
       cancelled = true;
     };
   }, [guestName, slots]);
 
-  function save() {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    canvas.toBlob((blob) => {
-      if (!blob) return;
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `thiep-moi-${slug(guestName)}.png`;
-      a.click();
-      URL.revokeObjectURL(url);
-    }, "image/png");
+  async function save() {
+    const file = fileRef.current;
+    if (!file) return;
+
+    // Phones: the share sheet is the only route into the photo album, since
+    // iOS Safari ignores the download attribute entirely.
+    if (canShare) {
+      try {
+        await navigator.share({ files: [file] });
+        return;
+      } catch (error) {
+        // Dismissing the sheet is not a failure worth falling back from
+        if ((error as Error).name === "AbortError") return;
+      }
+    }
+
+    const url = URL.createObjectURL(file);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = file.name;
+    a.click();
+    URL.revokeObjectURL(url);
   }
 
   return (
@@ -293,7 +322,7 @@ export function GuestCard({
       </div>
 
       <p className="mt-3 text-center text-sm text-ink/60">
-        {content.card.longPressHint}
+        {canShare ? content.card.shareHint : content.card.longPressHint}
       </p>
     </div>
   );
