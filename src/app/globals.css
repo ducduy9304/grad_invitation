@@ -1,20 +1,20 @@
 @import "tailwindcss";
 
 /*
- * Type system — two families, one rule.
+ * Type system — one family per section, never two.
  *
- *   --font-display (Playfair, serif)
- *       Section headings, proper names, and numerals that act as ornament:
- *       the poster title, the foil name lines, the big day numeral, the
- *       countdown digits, the date strip.
+ *   The envelope and the hero are the poster: Playfair throughout, the way
+ *   the printed card is set. Overline, title, names, the date strip and the
+ *   countdown all share it.
  *
- *   --font-body (Be Vietnam Pro, sans), the default
- *       Everything a guest reads for information: body copy, small-caps
- *       labels, card titles, buttons and every form control.
+ *   Everything below the hero is the information sheet: Be Vietnam Pro
+ *   throughout. Section headings, card titles, addresses, labels, buttons
+ *   and form controls. Playfair reads poorly at body size in Vietnamese —
+ *   thin strokes under a lot of diacritics — and these blocks exist to be
+ *   read, not admired.
  *
- * The point is that one kind of element never changes family between
- * sections: every button is sans, every small-caps label is sans, so no
- * single block ever looks like it was set by two different hands.
+ * So no single block ever mixes two families. The font change happens only
+ * at the seam between the poster and the information below it.
  */
 
 @theme {

@@ -51,7 +51,7 @@ export function Rsvp() {
           <p className="text-4xl" aria-hidden>
             💌
           </p>
-          <h2 className="text-foil mt-4 font-display text-3xl">{content.rsvp.doneTitle}</h2>
+          <h2 className="text-foil mt-4 text-3xl font-semibold">{content.rsvp.doneTitle}</h2>
           <p className="mt-3 text-base text-ink">
             {content.rsvp.doneNote} {content.date.full}.
           </p>
@@ -63,7 +63,7 @@ export function Rsvp() {
   return (
     <section className="px-6 py-16">
       <Reveal>
-        <h2 className="text-center font-display text-3xl tracking-wide text-ink">
+        <h2 className="text-center text-2xl font-semibold tracking-wide text-ink sm:text-3xl">
           {content.rsvp.heading}
         </h2>
 

@@ -64,7 +64,7 @@ export function Countdown() {
                 {value}
               </span>
             </div>
-            <span className="mt-1 block text-[11px] tracking-[0.14em] text-ink uppercase">
+            <span className="mt-1 block font-display text-[11px] tracking-[0.14em] text-ink uppercase">
               {label}
             </span>
           </div>

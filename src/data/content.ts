@@ -11,11 +11,11 @@ export const content = {
   /** Short name, shown on the card that slides out of the envelope. */
   shortName: "Huyền Trân",
   /** Small line above the title. */
-  overline: "Em tốt nghiệp rùi,\ntới chơi với em nhaa!",
+  overline: "Bé tốt nghiệp rùi,\ntới chơi với bé nhaa!",
   /** Poster-style title. \n forces the line break. */
   title: "Tran’s Graduation\nInvitation",
   /** Invitation line. One shared link for everyone, so it is addressed generally. */
-  inviteLine: "Thương mời Anh Chị Em, Bạn bè",
+  inviteLine: "Thương mời Anh Chị Em, Bạn dì",
   inviteName: "thân thương",
 
   /** Ceremony start, used by the countdown. ISO format; +07:00 is Vietnam time. */

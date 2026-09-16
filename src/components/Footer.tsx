@@ -8,7 +8,7 @@ export function Footer() {
         <p className="mx-auto max-w-3xl text-base leading-relaxed text-balance text-ink">
           {content.footer.thanks}
         </p>
-        <p className="text-foil mt-5 font-display text-2xl">
+        <p className="text-foil mt-5 text-2xl font-semibold tracking-wide">
           {content.footer.signature}
         </p>
         <p className="mt-2 text-base leading-relaxed text-ink">

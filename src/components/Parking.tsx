@@ -7,7 +7,7 @@ export function Parking() {
   return (
     <section className="px-6 py-16">
       <Reveal>
-        <h2 className="text-center font-display text-3xl tracking-wide text-ink">
+        <h2 className="text-center text-2xl font-semibold tracking-wide text-ink sm:text-3xl">
           {heading}
         </h2>
         <p className="mx-auto mt-3 max-w-3xl text-center text-base leading-relaxed text-balance text-ink">

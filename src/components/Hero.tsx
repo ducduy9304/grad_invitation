@@ -23,7 +23,7 @@ export function Hero() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.05, ease }}
-        className="text-xs leading-relaxed font-medium tracking-[0.26em] whitespace-pre-line text-ink uppercase sm:text-sm"
+        className="font-display text-xs leading-relaxed tracking-[0.26em] whitespace-pre-line text-ink uppercase sm:text-sm"
       >
         {content.overline}
       </motion.p>
@@ -70,7 +70,7 @@ export function Hero() {
         transition={{ duration: 0.8, delay: 0.62 }}
         className={gapMd}
       >
-        <p className="text-xs font-medium tracking-[0.26em] text-ink uppercase sm:text-sm">
+        <p className="font-display text-xs tracking-[0.26em] text-ink uppercase sm:text-sm">
           {content.inviteLine}
         </p>
         <p className="text-foil mt-1 font-display text-[clamp(1.5rem,4.4vw,2.25rem)] tracking-wide">
@@ -112,7 +112,7 @@ export function Hero() {
         transition={{ duration: 0.8, delay: 0.82, ease }}
         className={`${gapMd} flex w-full max-w-sm flex-col items-center`}
       >
-        <p className="mb-2 text-xs tracking-[0.24em] text-ink uppercase sm:text-sm">
+        <p className="mb-2 font-display text-xs tracking-[0.24em] text-ink uppercase sm:text-sm">
           Còn lại
         </p>
         <Countdown />
