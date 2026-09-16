@@ -8,8 +8,8 @@
 export const content = {
   /** Full name: page title, footer, and the wax-seal initial. */
   graduateName: "Nguyễn Ngọc Huyền Trân",
-  /** Short name, shown on the card that slides out of the envelope. */
-  shortName: "Huyền Trân",
+  /** The line on the card that slides out of the envelope. */
+  envelopeGreeting: "Trân xin chào",
   /** Small line above the title. */
   overline: "Trân tốt nghiệp rùi,\ntới chơi với Trân nhaa!",
   /** Poster-style title. \n forces the line break. */

@@ -66,7 +66,7 @@ export function Envelope({ onOpen }: { onOpen: () => void }) {
               transition={{ duration: 0.9, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
             >
               <p className="text-foil font-display text-xl tracking-[0.12em] uppercase sm:text-3xl">
-                {content.shortName}
+                {content.envelopeGreeting}
               </p>
             </motion.div>
 
