@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { content } from "@/data/content";
+import { flush, send } from "@/lib/rsvp-outbox";
 import { GuestCard } from "./GuestCard";
 import { Reveal } from "./Reveal";
 
@@ -18,12 +19,19 @@ export function Rsvp() {
   const [guestSlots, setGuestSlots] = useState<string[]>([]);
   const [saveFailed, setSaveFailed] = useState(false);
 
+  // A reply a previous visit could not deliver gets another go
+  useEffect(() => {
+    void flush();
+  }, []);
+
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (status === "sent") return;
 
     const form = new FormData(event.currentTarget);
     const name = String(form.get("name") ?? "").trim();
+    // Identifies this reply so a retry cannot store it twice
+    const submissionId = crypto.randomUUID();
     const data = {
       name,
       attending: form.get("attending"),
@@ -43,18 +51,9 @@ export function Rsvp() {
     setGuestSlots(data.slots.map(String));
     setStatus("sent");
 
-    void (async () => {
-      try {
-        const res = await fetch("/api/rsvp", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        });
-        if (!res.ok) throw new Error(await res.text());
-      } catch {
-        setSaveFailed(true);
-      }
-    })();
+    void send({ ...data, submissionId }).then((stored) => {
+      if (!stored) setSaveFailed(true);
+    });
   }
 
   if (status === "sent") {
@@ -145,21 +144,16 @@ export function Rsvp() {
             <div className="mt-3 space-y-2">
               {content.rsvp.slotOptions.map((slot) => (
                 <label
-                  key={slot.label}
-                  className="flex cursor-pointer items-start gap-3 text-base text-ink"
+                  key={slot}
+                  className="flex cursor-pointer items-center gap-3 text-base text-ink"
                 >
                   <input
                     type="checkbox"
                     name="slots"
-                    value={slot.label}
-                    className="mt-1.5 h-4.5 w-4.5 shrink-0 accent-[#b8944f]"
+                    value={slot}
+                    className="h-4.5 w-4.5 accent-[#b8944f]"
                   />
-                  <span>
-                    {slot.label}
-                    {"note" in slot && slot.note && (
-                      <span className="block text-sm text-ink/60">{slot.note}</span>
-                    )}
-                  </span>
+                  {slot}
                 </label>
               ))}
             </div>

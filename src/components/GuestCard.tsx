@@ -19,8 +19,6 @@ const W = 1080;
 const BASE_H = 1662;
 /** Extra room when the guest picked at least one time slot. */
 const SLOT_BLOCK = 104;
-/** Extra room again when one of those slots carries a note. */
-const NOTE_LINE = 56;
 
 const INK = "#2c2724";
 const PAPER = "#f7f4ee";
@@ -136,13 +134,7 @@ async function draw(
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
 
-  // A note only appears if the guest actually picked the option carrying it
-  const note = content.rsvp.slotOptions.find(
-    (option) => "note" in option && option.note && slots.includes(option.label),
-  )?.note;
-
-  const H =
-    BASE_H + (slots.length ? SLOT_BLOCK : 0) + (note ? NOTE_LINE : 0);
+  const H = BASE_H + (slots.length ? SLOT_BLOCK : 0);
   canvas.width = W;
   canvas.height = H;
 
@@ -233,10 +225,6 @@ async function draw(
     });
     vy += 46;
     centred(ctx, slots.join("  ·  "), vy, 30, SANS, { tracking: 1 });
-    if (note) {
-      vy += 48;
-      centred(ctx, `📍 ${note}`, vy, 30, SANS, { tracking: 1 });
-    }
   }
 
   // Venue
@@ -374,9 +362,6 @@ export function GuestCard({
         </a>
       </div>
 
-      <p className="mt-3 text-center text-sm text-ink/60">
-        {canShare ? content.card.shareHint : content.card.longPressHint}
-      </p>
     </div>
   );
 }

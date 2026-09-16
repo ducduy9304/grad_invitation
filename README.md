@@ -102,5 +102,12 @@ Without `GOOGLE_SCRIPT_URL` the form still shows its thank-you screen but
 nothing is stored, so after deploying send one real RSVP and check that the row
 lands in the sheet.
 
+Apps Script answers slowly and unevenly — measured between 3 and 33 seconds —
+so the card is shown the moment someone submits and the write continues
+underneath. A reply is parked in `localStorage`, retried three times, and only
+dropped once the server confirms it; whatever is still parked is retried on the
+guest's next visit. Every reply carries a `submissionId` that the script checks
+before appending, so none of that retrying can store the same guest twice.
+
 `NEXT_PUBLIC_SITE_URL` feeds `metadataBase`. Without it the preview image
 resolves against `localhost` and shared links show no thumbnail.

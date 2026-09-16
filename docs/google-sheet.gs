@@ -6,10 +6,12 @@
  * content, and each row tinted by whether the guest is coming.
  */
 
-var HEADERS = ['Timestamp', 'Name', 'Attending', 'Time slots', 'Message'];
+// Id is last so it can be appended to a sheet written by an older version.
+// It exists to make retries safe: the same submission never lands twice.
+var HEADERS = ['Timestamp', 'Name', 'Attending', 'Time slots', 'Message', 'Id'];
 
 /** Pixel widths per column, in the same order as HEADERS. */
-var WIDTHS = [150, 190, 150, 210, 340];
+var WIDTHS = [150, 190, 150, 210, 340, 250];
 
 var COLOURS = {
   header: '#b8944f',      // gold, same as the invitation
@@ -42,12 +44,21 @@ function doPost(e) {
     }
 
     var data = JSON.parse(e.postData.contents);
+
+    // The client retries when a reply is slow or lost, and Apps Script may
+    // well have written the row already. Skip anything seen before.
+    var id = String(data.submissionId || '');
+    if (id && alreadyStored_(sheet, id)) {
+      return json({ ok: true, duplicate: true });
+    }
+
     sheet.appendRow([
       new Date(),
       data.name || '',
       data.attending || '',
       data.slots || '',
       data.message || '',
+      id,
     ]);
 
     styleRow_(sheet, sheet.getLastRow());
@@ -57,6 +68,17 @@ function doPost(e) {
   } finally {
     lock.releaseLock();
   }
+}
+
+function alreadyStored_(sheet, id) {
+  var lastRow = sheet.getLastRow();
+  if (lastRow < 2) return false;
+  var column = HEADERS.indexOf('Id') + 1;
+  var seen = sheet.getRange(2, column, lastRow - 1, 1).getValues();
+  for (var i = 0; i < seen.length; i++) {
+    if (String(seen[i][0]) === id) return true;
+  }
+  return false;
 }
 
 /** Opening the /exec URL in a browser hits this, confirming the deployment. */
@@ -129,6 +151,8 @@ function styleRow_(sheet, row) {
 
   // Long messages wrap instead of spilling over the next column
   sheet.getRange(row, 4, 1, 2).setWrap(true);
+  // The id is plumbing, not something to read at a glance
+  sheet.getRange(row, HEADERS.indexOf('Id') + 1).setFontSize(8).setFontColor('#b9b2a8');
 }
 
 function json(obj) {

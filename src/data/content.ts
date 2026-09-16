@@ -118,16 +118,8 @@ export const content = {
     attendingOptions: ["Chắc chắn rùi", "Hông được rùi"],
     /** Guests can tick more than one slot. */
     slotLabel: "Người đẹp ghé được khung giờ nào zaa? (chọn nhiều cũng oki)",
-    /**
-     * Guests may tick several. A `note` is shown under that option and, if it
-     * was picked, printed once on the card — the label itself stays clean so
-     * the sheet column reads well no matter how many are combined.
-     */
-    slotOptions: [
-      { label: "15h30 – 16h" },
-      { label: "16h – 16h30" },
-      { label: "16h30 – 17h", note: "Hồ Con Rùa" },
-    ],
+    /** Guests may tick several. */
+    slotOptions: ["15h30 – 16h", "16h – 16h30", "16h30 – 17h"],
     messageLabel: "Nhắn gì đó cho Trân hongg",
     messagePlaceholder: "Tuỳ người đẹp, hông bắt buộc",
     submit: "Gửi tín hiệu tới Trân nhaa",
@@ -146,10 +138,6 @@ export const content = {
     contactHeading: "Liên hệ",
     saveLabel: "Lưu thiệp về máy",
     mapLabel: "Xem đường đi",
-    /** Shown where the share sheet is available: one tap reaches Photos. */
-    shareHint: "Bấm nút rồi chọn “Lưu ảnh” là thiệp vào album của máy",
-    /** Fallback hint for browsers without the share sheet. */
-    longPressHint: "Hoặc nhấn giữ vào thiệp rồi chọn Lưu ảnh",
   },
 
   footer: {
