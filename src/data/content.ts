@@ -143,7 +143,7 @@ export const content = {
   footer: {
     thanks: "Cảm ơn mọi người đã đến chung vui cùng Trân 🎓",
     signature: "See u soon",
-    closing: "Nhớ đến á nha, thân lắm mới mời áa hihi 😇",
+    closing: "Nhớ đến á nha, thân lắm mới mời á hihi 😇",
   },
 
   /** Background music. Drop an mp3 into public/audio/ and set the path. null hides the button. */
