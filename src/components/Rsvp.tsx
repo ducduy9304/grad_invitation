@@ -130,16 +130,21 @@ export function Rsvp() {
             <div className="mt-3 space-y-2">
               {content.rsvp.slotOptions.map((slot) => (
                 <label
-                  key={slot}
-                  className="flex cursor-pointer items-center gap-3 text-base text-ink"
+                  key={slot.label}
+                  className="flex cursor-pointer items-start gap-3 text-base text-ink"
                 >
                   <input
                     type="checkbox"
                     name="slots"
-                    value={slot}
-                    className="h-4.5 w-4.5 accent-[#b8944f]"
+                    value={slot.label}
+                    className="mt-1.5 h-4.5 w-4.5 shrink-0 accent-[#b8944f]"
                   />
-                  {slot}
+                  <span>
+                    {slot.label}
+                    {"note" in slot && slot.note && (
+                      <span className="block text-sm text-ink/60">{slot.note}</span>
+                    )}
+                  </span>
                 </label>
               ))}
             </div>

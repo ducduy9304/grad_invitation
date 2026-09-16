@@ -118,10 +118,15 @@ export const content = {
     attendingOptions: ["Chắc chắn rùi", "Hông được rùi"],
     /** Guests can tick more than one slot. */
     slotLabel: "Người đẹp ghé được khung giờ nào zaa? (chọn nhiều cũng oki)",
+    /**
+     * Guests may tick several. A `note` is shown under that option and, if it
+     * was picked, printed once on the card — the label itself stays clean so
+     * the sheet column reads well no matter how many are combined.
+     */
     slotOptions: [
-      "15h30 – 16h",
-      "16h – 16h30",
-      "16h30 – 17h (ở Hồ Con Rùa)",
+      { label: "15h30 – 16h" },
+      { label: "16h – 16h30" },
+      { label: "16h30 – 17h", note: "Khung này mình kéo nhau ra Hồ Con Rùa nha" },
     ],
     messageLabel: "Nhắn gì đó cho Trân hongg",
     messagePlaceholder: "Tuỳ người đẹp, hông bắt buộc",
