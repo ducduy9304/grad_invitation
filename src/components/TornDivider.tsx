@@ -1,4 +1,4 @@
-/** Dải giấy xé ngăn giữa hai khối, thay cho đường kẻ thẳng. */
+/** A torn-paper strip between two blocks, instead of a straight rule. */
 export function TornDivider({ flip = false }: { flip?: boolean }) {
   return (
     <div

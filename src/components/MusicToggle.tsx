@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { content } from "@/data/content";
 
-/** Nút nhạc nền nổi ở góc. Mặc định TẮT để không ai bị giật mình khi mở link. */
+/** Floating background-music button. Starts OFF so nobody is startled on open. */
 export function MusicToggle() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState(false);
@@ -12,7 +12,7 @@ export function MusicToggle() {
     const audio = audioRef.current;
     if (!audio) return;
     if (playing) {
-      // Trình duyệt có thể chặn nếu chưa có tương tác — coi như vẫn đang tắt
+      // Browsers block playback without a prior gesture, so fall back to off
       audio.play().catch(() => setPlaying(false));
     } else {
       audio.pause();

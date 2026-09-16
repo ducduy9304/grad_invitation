@@ -1,11 +1,11 @@
 import Image from "next/image";
 
 /**
- * Khung ảnh dán băng keo, nghiêng nhẹ như dán tay vào sổ.
+ * A taped photo frame, tilted slightly like it was stuck into a scrapbook.
  *
- * Có hai cách dựng khung:
- *  - Truyền width/height: khung bám đúng tỉ lệ thật của file ảnh.
- *  - Không truyền: khung dùng tỉ lệ cố định ở `ratio`, ảnh bị cắt cho vừa.
+ * Two sizing modes:
+ *  - Pass width/height: the frame follows the file's real aspect ratio.
+ *  - Omit them: the frame uses the fixed `ratio` and the photo is cropped to fit.
  */
 export function Polaroid({
   src,
@@ -15,13 +15,13 @@ export function Polaroid({
   height,
   rotate = -2,
   priority = false,
-  /** Chỉ dùng khi không có width/height. */
+  /** Only used when width/height are not given. */
   ratio = "4 / 3",
-  /** "top" dán một miếng giữa cạnh trên, "corner" dán chéo góc trái. */
+  /** "top" tapes one strip across the top edge, "corner" tapes diagonally over the top-left. */
   tape = "top",
   /**
-   * Class kẹp chiều cao ảnh, ví dụ "max-h-[20rem]".
-   * Có giá trị thì khung co lại ôm sát ảnh thay vì chiếm hết bề ngang.
+   * Class that caps the photo height, e.g. "max-h-[20rem]".
+   * When set, the frame shrinks to hug the photo instead of filling the row.
    */
   fitHeight,
   sizes = "(max-width: 768px) 88vw, 560px",
@@ -52,7 +52,7 @@ export function Polaroid({
       {tape === "top" ? (
         <span className="tape -top-3 left-1/2 -translate-x-1/2 -rotate-2" />
       ) : (
-        /* Dán vắt chéo qua góc trên bên trái, thò ra ngoài mép ảnh */
+        /* Taped diagonally across the top-left corner, overhanging the edge */
         <span className="tape -top-4 -left-7 z-10 w-28 -rotate-[38deg]" />
       )}
 

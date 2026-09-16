@@ -14,7 +14,7 @@ const UNITS = [
 type Parts = Record<(typeof UNITS)[number]["key"], number>;
 
 function remaining(): Parts {
-  // Kẹp về 0 để sau ngày lễ không hiện số âm
+  // Clamp at zero so the numbers never go negative after the ceremony
   const ms = Math.max(0, target - Date.now());
   const total = Math.floor(ms / 1000);
   return {
@@ -25,9 +25,9 @@ function remaining(): Parts {
   };
 }
 
-/** Bốn ô đếm ngược, đặt ngay trong hero nên không tự bọc section. */
+/** The four countdown tiles. Rendered inside the hero, so it has no section wrapper. */
 export function Countdown() {
-  // Bắt đầu bằng null để server và client khớp nhau, tránh lỗi hydration
+  // Start as null so server and client markup agree, avoiding a hydration mismatch
   const [parts, setParts] = useState<Parts | null>(null);
 
   useEffect(() => {
@@ -53,8 +53,9 @@ export function Countdown() {
           >
             <div className="h-[clamp(1.9rem,4svh,2.75rem)] overflow-hidden">
               {/*
-                Đổi key -> React thay phần tử -> animation CSS chạy lại.
-                Không dùng AnimatePresence vì node thoát bị kẹt lại trong DOM.
+                Changing the key remounts the element, which replays the CSS
+                animation. AnimatePresence is avoided here: its exiting nodes
+                piled up in the DOM instead of being removed.
               */}
               <span
                 key={value}

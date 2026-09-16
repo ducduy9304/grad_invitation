@@ -15,7 +15,7 @@ import { TornDivider } from "./TornDivider";
 export function Invitation() {
   const [opened, setOpened] = useState(false);
 
-  // Khoá cuộn trong lúc phong bì còn đóng
+  // Lock scrolling while the envelope is still closed
   useEffect(() => {
     document.body.style.overflow = opened ? "" : "hidden";
     return () => {

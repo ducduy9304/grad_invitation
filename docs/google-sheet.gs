@@ -1,24 +1,24 @@
 /**
- * Dán toàn bộ file này vào Google Apps Script để nhận RSVP về Google Sheet.
- * Hướng dẫn từng bước xem ở README.md, mục "Nhận RSVP về Google Sheet".
+ * Paste this into Google Apps Script to receive RSVPs into a Google Sheet.
+ * Step-by-step setup is in README.md, "Collect RSVPs in a Google Sheet".
  */
 
 function doPost(e) {
-  // Nhiều người bấm gửi cùng lúc thì các lệnh ghi có thể đè lên nhau.
-  // Khoá lại để mỗi lần chỉ một lượt ghi, chờ tối đa 20 giây.
+  // Several guests can submit at the same moment and their appends would
+  // race. Serialise them; give up after 20 seconds rather than hanging.
   var lock = LockService.getScriptLock();
   try {
     lock.waitLock(20000);
   } catch (err) {
-    return json({ ok: false, error: 'Máy chủ đang bận' });
+    return json({ ok: false, error: 'Server busy' });
   }
 
   try {
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
 
-    // Lần chạy đầu tiên thì tạo dòng tiêu đề
+    // First run: lay down the header row
     if (sheet.getLastRow() === 0) {
-      sheet.appendRow(['Thời điểm', 'Tên', 'Tham dự', 'Lời nhắn']);
+      sheet.appendRow(['Timestamp', 'Name', 'Attending', 'Message']);
       sheet.getRange(1, 1, 1, 4).setFontWeight('bold');
       sheet.setFrozenRows(1);
     }
@@ -39,9 +39,9 @@ function doPost(e) {
   }
 }
 
-/** Mở URL /exec bằng trình duyệt sẽ thấy dòng này — dùng để kiểm tra đã deploy đúng chưa. */
+/** Opening the /exec URL in a browser hits this, confirming the deployment. */
 function doGet() {
-  return json({ ok: true, message: 'Endpoint RSVP đang chạy' });
+  return json({ ok: true, message: 'RSVP endpoint is live' });
 }
 
 function json(obj) {

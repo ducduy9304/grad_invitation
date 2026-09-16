@@ -1,88 +1,97 @@
-# Thiệp mời tốt nghiệp
+# Graduation invitation
 
-Web thiệp mời một trang. Phong cách giấy kem – băng keo washi – chữ nhũ, dựng bằng
-Next.js 16 + Tailwind v4 + Motion, deploy thẳng lên Vercel.
+A one-page invitation site. Cream paper, washi tape and foil lettering, built
+with Next.js 16, Tailwind v4 and Motion, deployed on Vercel.
 
-## Chạy local
+The page is in Vietnamese; the code and docs are in English.
+
+## Run locally
 
 ```bash
+npm install
 npm run dev
 ```
 
-Mở http://localhost:3000
+Then open http://localhost:3000
 
-## Sửa nội dung
+## Edit the content
 
-Toàn bộ chữ nghĩa, ngày giờ, địa điểm nằm trong **một file duy nhất**:
-[`src/data/content.ts`](src/data/content.ts). Không cần đụng vào component nào.
+Every string, date, place and photo path lives in one file:
+[`src/data/content.ts`](src/data/content.ts). No component needs touching.
 
-Vài chỗ hay sửa nhất:
+| Field | What it controls |
+| --- | --- |
+| `graduateName` | Name in the hero, and the letter on the wax seal |
+| `title` | Poster-style heading. `\n` forces the line break |
+| `eventStart` | Countdown target. ISO format, `+07:00` for Vietnam time |
+| `date`, `time`, `venue` | The date strip and the three info cards |
+| `venue.mapsUrl` | Destination of the directions button on the venue card |
+| `parking` | Parking suggestions, each with its own map link |
+| `gallery` | Photo album. Leave it empty and the section hides itself |
+| `rsvp` | Every label on the RSVP form |
+| `music` | Path to an mp3, or `null` to hide the music button |
 
-| Trường          | Ý nghĩa                                                 |
-| ----------------- | --------------------------------------------------------- |
-| `graduateName`  | Tên hiện ở hero và trên dấu sáp phong bì          |
-| `eventStart`    | Mốc đếm ngược, định dạng ISO kèm`+07:00`       |
-| `venue.mapsUrl` | Link Google Maps của nút "Chỉ đường"                |
-| `parking`       | Danh sách chỗ gửi xe và link bản đồ              |
-| `gallery`       | Album ảnh, để mảng rỗng thì phần này tự ẩn      |
-| `music`         | Đường dẫn file nhạc,`null` thì nút nhạc tự ẩn |
+## Replace the photos
 
-## Thay ảnh
+Put files in `public/images/` and point `content.ts` at them.
 
-Bỏ ảnh vào `public/images/` rồi trỏ đường dẫn trong `content.ts`.
+| File | Where it shows | Aspect |
+| --- | --- | --- |
+| `hero-16x9.jpg` | Hero frame | any — the frame follows the file |
+| `og.jpg` | Link preview on Zalo, Messenger, Facebook | 1.91:1 |
 
-| File | Dùng ở đâu | Tỉ lệ |
-|---|---|---|
-| `hero-edited.jpg` | Khung ảnh ở hero | bất kỳ — khung tự bám theo |
-| `og.jpg` | Ảnh xem trước khi gửi link qua Zalo/Messenger | ngang 1.91:1 |
+The hero frame takes its proportions from `heroPhoto.width` / `height`, so a
+photo of different proportions only needs those two numbers updated. Nothing is
+cropped.
 
-Khung ảnh hero **tự bám theo tỉ lệ thật của file**, không cắt xén gì. Đổi ảnh khác
-tỉ lệ thì sửa `width` và `height` trong `heroPhoto` cho khớp kích thước file mới.
+**Give a replacement photo a new filename.** Next caches optimised images by
+path, so overwriting an existing name keeps serving the old picture — in the
+browser and on the server.
 
-Ảnh gốc để ở `docs/`. **Đặt tên file mới mỗi lần thay ảnh**, đừng ghi đè cùng tên —
-Next lưu bản đã tối ưu theo đường dẫn nên ghi đè sẽ vẫn ra ảnh cũ.
+## Collect RSVPs in a Google Sheet
 
-## Nhạc nền
+1. Create a sheet at [sheets.new](https://sheets.new).
+2. **Extensions → Apps Script**. Replace the sample code with
+   [`docs/google-sheet.gs`](docs/google-sheet.gs) and save.
+3. **Deploy → New deployment**. Click the gear next to "Select type" and pick
+   **Web app**. Set *Execute as* to **Me** and *Who has access* to **Anyone**.
+   Anything narrower fails: the caller is the Vercel server, which has no
+   Google session.
+4. Google will warn that the app is unverified. That screen is expected for
+   your own script — **Advanced → Go to … (unsafe)**, then **Allow**.
+5. Copy the web app URL, ending in `/exec`.
+6. Open that URL in a browser. `{"ok":true,...}` means the deployment works.
 
-Bỏ file mp3 vào `public/audio/`, rồi đổi `music` trong `content.ts` thành
-`"/audio/ten-file.mp3"`. Nút nhạc mặc định TẮT, khách tự bấm mới chạy.
-
-## Nhận RSVP về Google Sheet
-
-1. Tạo một Google Sheet mới tại [sheets.new](https://sheets.new), đặt tên tuỳ ý.
-2. Menu **Tiện ích mở rộng → Apps Script**. Xoá hết code mẫu, dán toàn bộ
-   [`docs/google-sheet.gs`](docs/google-sheet.gs) vào, bấm lưu.
-3. Bấm **Triển khai → Lần triển khai mới**. Bấm icon bánh răng cạnh "Chọn loại"
-   rồi chọn **Ứng dụng web**. Đặt:
-   - Thực thi với tư cách: **Tôi**
-   - Người có quyền truy cập: **Bất kỳ ai**
-4. Lần đầu Google sẽ hỏi cấp quyền. Màn hình "Google chưa xác minh ứng dụng này"
-   là bình thường — bấm **Nâng cao → Chuyển đến … (không an toàn)**. Đây là script
-   của chính bạn, chạy trên tài khoản của bạn.
-5. Copy **URL ứng dụng web** (kết thúc bằng `/exec`).
-6. Mở URL đó bằng trình duyệt để kiểm tra. Thấy `{"ok":true,...}` là đã chạy.
-
-Rồi khai báo cho web biết:
+Then wire it up:
 
 ```bash
 cp .env.local.example .env.local
-# dán URL /exec vào GOOGLE_SCRIPT_URL
+# paste the /exec URL into GOOGLE_SCRIPT_URL
 ```
 
-Trên Vercel thì vào **Settings → Environment Variables** thêm cùng biến đó,
-rồi **Redeploy** (biến môi trường chỉ áp dụng cho lần build mới).
+The URL never reaches the guest's browser. The form posts to `/api/rsvp` on
+this site, and only the server calls Apps Script.
 
-Chưa cấu hình cũng không sao — form vẫn chạy, nội dung in ra terminal.
+> **Editing the script later**: a save is not enough. Go to **Deploy → Manage
+> deployments → edit → Version: New version**, otherwise `/exec` keeps running
+> the old code.
 
-> **Sửa script sau này**: mỗi lần sửa code phải **Triển khai → Quản lý các lần
-> triển khai → sửa → Phiên bản: Phiên bản mới**. Chỉ bấm lưu thôi thì URL `/exec`
-> vẫn chạy code cũ.
+## Deploy to Vercel
 
+1. Push to GitHub and import the repository at [vercel.com/new](https://vercel.com/new).
+   The Next.js preset and root directory are detected automatically.
+2. Under **Settings → Environment Variables**, add:
 
-## Deploy lên Vercel
+   | Name | Value |
+   | --- | --- |
+   | `GOOGLE_SCRIPT_URL` | the `/exec` URL |
+   | `NEXT_PUBLIC_SITE_URL` | the deployed origin, no trailing slash |
 
-1. Đẩy repo lên GitHub.
-2. Vào vercel.com > Add New > Project > chọn repo. Vercel tự nhận Next.js.
-3. Trong Settings > Environment Variables, thêm `GOOGLE_SCRIPT_URL`
-   và `NEXT_PUBLIC_SITE_URL` (domain Vercel cấp).
-4. Deploy.
+3. **Redeploy.** Environment variables only apply to new builds.
+
+Without `GOOGLE_SCRIPT_URL` the form still shows its thank-you screen but
+nothing is stored, so after deploying send one real RSVP and check that the row
+lands in the sheet.
+
+`NEXT_PUBLIC_SITE_URL` feeds `metadataBase`. Without it the preview image
+resolves against `localhost` and shared links show no thumbnail.

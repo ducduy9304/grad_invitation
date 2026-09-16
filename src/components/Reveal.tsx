@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 import type { ReactNode } from "react";
 
-/** Bọc quanh một khối để nó trôi lên và hiện dần khi cuộn tới. */
+/** Wraps a block so it drifts up and fades in when scrolled into view. */
 export function Reveal({
   children,
   delay = 0,

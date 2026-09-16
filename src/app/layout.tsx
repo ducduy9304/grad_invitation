@@ -19,7 +19,7 @@ const beVietnam = Be_Vietnam_Pro({
 const title = `Thiệp mời tốt nghiệp — ${content.graduateName}`;
 const description = `${content.date.full} · ${content.time.range} · ${content.venue.name}`;
 
-// Đổi thành domain thật sau khi deploy, để ảnh xem trước hiện đúng khi gửi link
+// Real domain after deploying, so link previews resolve the OG image absolutely
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export const metadata: Metadata = {

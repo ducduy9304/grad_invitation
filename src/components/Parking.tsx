@@ -19,7 +19,7 @@ export function Parking() {
         {spots.map((spot, i) => (
           <li key={spot.url}>
             <Reveal delay={i * 0.06} className="h-full">
-              {/* Cả ô là một liên kết, chạm đâu cũng mở bản đồ */}
+              {/* The whole tile is one link, so tapping anywhere opens the map */}
               <a
                 href={spot.url}
                 target="_blank"

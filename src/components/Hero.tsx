@@ -8,10 +8,10 @@ import { Countdown } from "./Countdown";
 const ease = [0.22, 1, 0.36, 1] as const;
 
 /*
- * Cả khối này phải lọt trong đúng một khung nhìn, kể cả trên laptop màn thấp.
- * Nên mọi khoảng cách đều dùng clamp() neo theo svh: màn cao thì giãn ra,
- * màn thấp thì tự co lại. svh (chứ không phải vh) để trên điện thoại còn
- * trừ được phần thanh địa chỉ của trình duyệt.
+ * The whole hero must fit in a single viewport, including short laptop screens.
+ * So every vertical gap is a clamp() anchored to svh: tall screens breathe,
+ * short screens compress. svh rather than vh, because on phones vh ignores the
+ * browser's address bar and the bottom of the hero would be cut off.
  */
 const gapSm = "mt-[clamp(0.55rem,1.6svh,1.1rem)]";
 const gapMd = "mt-[clamp(0.65rem,1.6svh,1.6rem)]";
@@ -37,7 +37,7 @@ export function Hero() {
         {content.title}
       </motion.h1>
 
-      {/* Ảnh để thẳng, khung bám đúng tỉ lệ thật của file */}
+      {/* Photo sits straight; the frame follows the file's real aspect ratio */}
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
@@ -51,10 +51,10 @@ export function Hero() {
           width={content.heroPhoto.width}
           height={content.heroPhoto.height}
           /*
-           * Ảnh to hết mức mà vẫn để cả khối đầu lọt một khung nhìn.
-           * Số đo thực tế: phần còn lại của hero (kể cả 20px viền trắng
-           * quanh ảnh) tốn khoảng 18%svh + 370px trên điện thoại,
-           * 22%svh + 410px trên desktop.
+           * As large as possible while keeping the whole hero in one viewport.
+           * Measured on the real page: everything except the photo (including
+           * the 20px white frame around it) costs roughly 18%svh + 370px on
+           * phones and 22%svh + 410px on desktop.
            */
           fitHeight="max-h-[clamp(6rem,calc(82svh-322px),34rem)] sm:max-h-[clamp(6rem,calc(78svh-362px),40rem)]"
           sizes="(max-width: 640px) 92vw, (max-width: 1024px) 80vw, 55vw"
@@ -78,7 +78,7 @@ export function Hero() {
         </p>
       </motion.div>
 
-      {/* Dải ngày giờ, dựng lại nhịp ba cột của tấm thiệp giấy */}
+      {/* Date strip, rebuilding the three-column rhythm of the paper card */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
@@ -105,7 +105,7 @@ export function Hero() {
         </div>
       </motion.div>
 
-      {/* Đồng hồ đếm ngược nằm luôn ở khung nhìn đầu, không phải cuộn xuống */}
+      {/* Countdown lives in the first viewport, no scrolling required */}
       <motion.div
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}

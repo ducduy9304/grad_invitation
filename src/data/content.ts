@@ -1,20 +1,22 @@
 /**
- * ĐÂY LÀ FILE DUY NHẤT BẠN CẦN SỬA để đổi nội dung thiệp.
- * Mọi chữ, ngày giờ, địa điểm, ảnh đều lấy từ đây.
+ * The single file to edit when changing the invitation.
+ * Every piece of copy, every date, place and photo path comes from here.
+ *
+ * Display strings stay in Vietnamese because that is what guests read.
  */
 
 export const content = {
-  /** Tên hiển thị lớn nhất ở hero. */
+  /** Largest name shown in the hero, also the wax-seal initial. */
   graduateName: "Nguyễn Ngọc Huyền Trân",
-  /** Dòng nhỏ phía trên tên. */
+  /** Small line above the title. */
   overline: "Em tốt nghiệp rùi,\ntới chơi với em nhaa!",
-  /** Tiêu đề kiểu poster. */
+  /** Poster-style title. \n forces the line break. */
   title: "Tran’s Graduation\nInvitation",
-  /** Câu mời. Vì dùng 1 link chung nên để lời mời chung. */
+  /** Invitation line. One shared link for everyone, so it is addressed generally. */
   inviteLine: "Thương mời Anh Chị Em, Bạn bè",
   inviteName: "thân thương",
 
-  /** Thời điểm bắt đầu buổi lễ — dùng cho đồng hồ đếm ngược. Định dạng ISO, +07:00 là giờ VN. */
+  /** Ceremony start, used by the countdown. ISO format; +07:00 is Vietnam time. */
   eventStart: "2026-09-26T15:30:00+07:00",
 
   date: {
@@ -37,20 +39,22 @@ export const content = {
       "https://www.google.com/maps/search/?api=1&query=59C+Nguy%E1%BB%85n+%C4%90%C3%ACnh+Chi%E1%BB%83u+UEH+H%E1%BB%93+Ch%C3%AD+Minh",
   },
 
-  /** Ảnh chính dán kiểu polaroid ở hero. Bỏ file vào public/images/. */
+  /** Hero photo. Drop the file into public/images/ and point `src` at it. */
   heroPhoto: {
     src: "/images/hero-16x9.jpg",
     alt: "Nguyễn Ngọc Huyền Trân",
-    caption: "", // để trống thì không hiện chú thích dưới ảnh
-    // Kích thước thật của file. Khung ảnh bám theo đúng tỉ lệ này,
-    // nên đổi ảnh khác tỉ lệ thì chỉ cần sửa hai số dưới đây.
+    caption: "", // empty means no caption under the photo
+    // The file's real pixel size. The frame follows this aspect ratio, so
+    // swapping in a photo of different proportions only needs these two numbers.
+    // Use a new filename when replacing a photo: Next caches optimised images
+    // by path, so overwriting the same name keeps serving the old one.
     width: 2026,
     height: 1138,
   },
 
 
 
-  /** Chỗ gửi xe quanh địa điểm tổ chức. */
+  /** Parking options around the venue. */
   parking: {
     heading: "Chỗ gửi xe",
     intro:
@@ -86,10 +90,10 @@ export const content = {
   },
 
   /**
-   * Album ảnh. Đang để rỗng nên khối "Một chút kỷ niệm" tự ẩn.
-   * Muốn bật lại: bỏ ảnh vào public/images/ rồi thêm vào đây, ví dụ
-   *   { src: "/images/g1.jpg", alt: "Ngày nhập học", caption: "Năm nhất" },
-   * Ảnh nên cắt dọc 4:5 cho khớp khung polaroid.
+   * Photo album. Empty, so the gallery section hides itself.
+   * To turn it on, drop files into public/images/ and list them here:
+   *   { src: "/images/g1.jpg", alt: "First day", caption: "Year one" },
+   * Crop them to 4:5 portrait to match the polaroid frame.
    */
   gallery: [] as { src: string; alt: string; caption?: string }[],
 
@@ -113,7 +117,7 @@ export const content = {
     signature: "Hẹn gặp ở lễ tốt nghiệp",
   },
 
-  /** Nhạc nền. Bỏ file mp3 vào public/audio/ rồi đổi đường dẫn. Để null nếu không dùng. */
+  /** Background music. Drop an mp3 into public/audio/ and set the path. null hides the button. */
   music: null as string | null,
 };
 

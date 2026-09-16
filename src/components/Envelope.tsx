@@ -5,11 +5,10 @@ import { AnimatePresence, motion } from "motion/react";
 import { content } from "@/data/content";
 
 /**
- * Màn chắn đầu tiên: một chiếc phong bì đóng dấu sáp.
- * Bấm vào phong bì (hoặc nút bên dưới) -> nắp mở ra, tấm thiệp trượt lên,
- * rồi màn chắn tan đi.
+ * The opening curtain: a wax-sealed envelope.
+ * Tapping it lifts the flap, slides the card out, then fades the curtain away.
  */
-/** Chữ cái trên dấu sáp: lấy đầu tên gọi, ví dụ "Thái Thụy" -> "T". */
+/** Wax-seal letter: first letter of the given name, e.g. "Mai Anh" -> "A". */
 const initial = (content.graduateName.trim().split(/\s+/).pop() ?? "")
   .charAt(0)
   .toUpperCase();
@@ -21,7 +20,7 @@ export function Envelope({ onOpen }: { onOpen: () => void }) {
   function handleOpen() {
     if (opening) return;
     setOpening(true);
-    // Chờ animation chạy xong rồi mới trả quyền cuộn lại cho trang
+    // Let the animation finish before handing scrolling back to the page
     window.setTimeout(() => {
       setGone(true);
       onOpen();
@@ -36,9 +35,10 @@ export function Envelope({ onOpen }: { onOpen: () => void }) {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.6 }}
         >
-          {/* Cả chiếc phong bì là một nút bấm, không chỉ riêng cái nút phía dưới */}
+          {/* The whole envelope is the button, not just the hint below it */}
           <motion.div
             className={`relative ${opening ? "" : "cursor-pointer"}`}
+            style={{ perspective: 1200 }}
             role="button"
             tabIndex={opening ? -1 : 0}
             aria-label="Khui thiệp"
@@ -54,9 +54,13 @@ export function Envelope({ onOpen }: { onOpen: () => void }) {
             animate={opening ? { y: -40, scale: 1.04 } : {}}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            {/* Tấm thiệp nằm trong phong bì, trượt lên khi mở */}
+            {/*
+              The card tucked inside, sliding up on open.
+              Its z-index sits above the flap: without that the flap paints
+              over the card and hides the name.
+            */}
             <motion.div
-              className="absolute inset-x-6 bottom-8 z-10 rounded-sm bg-white px-4 py-6 text-center shadow-lg sm:inset-x-10 sm:bottom-10 sm:py-8"
+              className="absolute inset-x-6 bottom-8 z-50 rounded-sm bg-white px-4 py-6 text-center shadow-lg sm:inset-x-10 sm:bottom-10 sm:py-8"
               initial={{ y: 0, opacity: 0 }}
               animate={opening ? { y: "-215%", opacity: 1 } : { y: 0, opacity: 0 }}
               transition={{ duration: 0.9, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
@@ -66,9 +70,9 @@ export function Envelope({ onOpen }: { onOpen: () => void }) {
               </p>
             </motion.div>
 
-            {/* Thân phong bì */}
+            {/* Envelope body */}
             <div className="relative h-56 w-[21rem] overflow-hidden rounded-sm bg-paper-deep shadow-[0_18px_50px_rgba(44,39,36,0.22)] sm:h-[21rem] sm:w-[32rem]">
-              {/* Hai nếp gấp chéo ở mặt trước */}
+              {/* The two diagonal creases on the front */}
               <div
                 className="absolute inset-0 z-20"
                 style={{
@@ -76,14 +80,19 @@ export function Envelope({ onOpen }: { onOpen: () => void }) {
                     "linear-gradient(135deg, transparent 49.6%, rgba(44,39,36,0.07) 50%, transparent 50.4%), linear-gradient(225deg, transparent 49.6%, rgba(44,39,36,0.07) 50%, transparent 50.4%)",
                 }}
               />
-              {/* Vạt giấy che phía trước tấm thiệp */}
+              {/* Front pocket covering the card */}
               <div
                 className="absolute inset-x-0 bottom-0 z-30 h-3/5 bg-paper-edge"
                 style={{ clipPath: "polygon(0 22%, 50% 0, 100% 22%, 100% 100%, 0 100%)" }}
               />
             </div>
 
-            {/* Nắp phong bì, lật ngược lên khi mở */}
+            {/*
+              The flap, swinging up and back on open. It needs the perspective
+              set on the wrapper: without one, rotateX collapses into a flat
+              scaleY(-1), so the flap flips in place and keeps covering the card
+              instead of opening.
+            */}
             <motion.div
               className="absolute inset-x-0 top-0 z-40 h-28 origin-top sm:h-44"
               style={{ transformStyle: "preserve-3d" }}
@@ -94,7 +103,7 @@ export function Envelope({ onOpen }: { onOpen: () => void }) {
                 className="h-full w-full bg-[#dbd0bc] shadow-[0_2px_6px_rgba(44,39,36,0.12)]"
                 style={{ clipPath: "polygon(0 0, 100% 0, 50% 100%)" }}
               />
-              {/* Dấu sáp niêm phong */}
+              {/* Wax seal */}
               <div className="absolute top-[68%] left-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-gradient-to-br from-gold-light to-gold shadow-md sm:h-20 sm:w-20">
                 <span className="font-display text-xl text-white/90 sm:text-3xl">
                   {initial}
