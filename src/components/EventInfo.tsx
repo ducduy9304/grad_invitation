@@ -19,6 +19,13 @@ const cards = [
     lead: content.venue.floor,
     body: [content.venue.name, ...content.venue.lines],
     href: content.venue.mapsUrl,
+    linkLabel: "Chỉ đường",
+  },
+  {
+    icon: "☎️",
+    title: content.contact.label,
+    /** Rendered as tappable rows instead of the usual body plus one button. */
+    people: content.contact.people,
   },
 ];
 
@@ -31,12 +38,12 @@ export function EventInfo() {
         </h2>
       </Reveal>
 
-      <div className="mx-auto mt-10 grid max-w-4xl gap-6 sm:grid-cols-3">
+      <div className="mx-auto mt-10 grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map((card, i) => (
           <Reveal key={card.title} delay={i * 0.08}>
             <article
               className="relative flex h-full flex-col items-center bg-white px-5 py-8 text-center shadow-[0_8px_24px_rgba(44,39,36,0.1)]"
-              style={{ transform: `rotate(${(i - 1) * 0.8}deg)` }}
+              style={{ transform: `rotate(${(i - 1.5) * 0.8}deg)` }}
             >
               <span className="tape -top-3 left-1/2 -translate-x-1/2 -rotate-3" />
               <span className="text-2xl" aria-hidden>
@@ -45,12 +52,36 @@ export function EventInfo() {
               <h3 className="mt-3 text-base font-semibold tracking-[0.2em] text-foil uppercase">
                 {card.title}
               </h3>
-              <div className="mt-4 space-y-1.5 text-base leading-relaxed text-ink">
-                {card.lead && <p className="font-semibold">{card.lead}</p>}
-                {card.body.map((line) => (
-                  <p key={line}>{line}</p>
-                ))}
-              </div>
+
+              {card.body && (
+                <div className="mt-4 space-y-1.5 text-base leading-relaxed text-ink">
+                  {card.lead && <p className="font-semibold">{card.lead}</p>}
+                  {card.body.map((line) => (
+                    <p key={line}>{line}</p>
+                  ))}
+                </div>
+              )}
+
+              {card.people && (
+                <div className="mt-4 w-full space-y-2.5">
+                  {card.people.map((person) => (
+                    <a
+                      key={person.href}
+                      href={person.href}
+                      className="block rounded-sm border border-gold/35 px-3 py-2 transition hover:bg-gold/10"
+                    >
+                      <span className="block text-sm text-ink/70">
+                        {person.name}
+                        {"note" in person && person.note ? ` · ${person.note}` : ""}
+                      </span>
+                      <span className="block text-base font-semibold tracking-wide text-ink">
+                        {person.phone}
+                      </span>
+                    </a>
+                  ))}
+                </div>
+              )}
+
               {card.href && (
                 <a
                   href={card.href}
@@ -58,7 +89,7 @@ export function EventInfo() {
                   rel="noopener noreferrer"
                   className="mt-5 rounded-full border border-gold/50 px-6 py-2.5 text-sm tracking-[0.15em] text-gold uppercase transition hover:bg-gold hover:text-white"
                 >
-                  Chỉ đường
+                  {card.linkLabel}
                 </a>
               )}
             </article>

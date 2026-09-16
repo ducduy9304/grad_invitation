@@ -42,6 +42,16 @@ export const content = {
       "https://www.google.com/maps/search/?api=1&query=59C+Nguy%E1%BB%85n+%C4%90%C3%ACnh+Chi%E1%BB%83u+UEH+H%E1%BB%93+Ch%C3%AD+Minh",
   },
 
+  /** Shown as the fourth card in the ceremony details. */
+  contact: {
+    label: "Liên hệ",
+    /** Numbers are grouped for reading; the tel: link keeps the raw digits. */
+    people: [
+      { name: "Trân", phone: "0385 592 932", href: "tel:+84385592932" },
+      { name: "Duy", note: "hỗ trợ", phone: "0865 208 467", href: "tel:+84865208467" },
+    ],
+  },
+
   /** Hero photo. Drop the file into public/images/ and point `src` at it. */
   heroPhoto: {
     src: "/images/hero-16x9.jpg",
