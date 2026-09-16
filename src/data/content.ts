@@ -48,7 +48,7 @@ export const content = {
     /** Numbers are grouped for reading; the tel: link keeps the raw digits. */
     people: [
       { name: "Trân", phone: "0385 592 932", href: "tel:+84385592932" },
-      { name: "Duy", note: "hỗ trợ", phone: "0865 208 467", href: "tel:+84865208467" },
+      { name: "Duy", note: "supporter", phone: "0865 208 467", href: "tel:+84865208467" },
     ],
   },
 
@@ -131,6 +131,7 @@ export const content = {
   /** The personalised card drawn after someone RSVPs. */
   card: {
     invitePrefix: "Thương mời",
+    slotsHeading: "Khung giờ bạn ghé",
     saveLabel: "Lưu thiệp về máy",
     mapLabel: "Xem đường đi",
     /** iOS ignores the download attribute, so guests there save by long-press. */

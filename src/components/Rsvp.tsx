@@ -15,6 +15,7 @@ export function Rsvp() {
   const [status, setStatus] = useState<Status>("idle");
   // Kept so the card can be addressed to whoever just replied
   const [guestName, setGuestName] = useState("");
+  const [guestSlots, setGuestSlots] = useState<string[]>([]);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -39,6 +40,7 @@ export function Rsvp() {
       });
       if (!res.ok) throw new Error(await res.text());
       setGuestName(name);
+      setGuestSlots(data.slots.map(String));
       setStatus("sent");
     } catch {
       setStatus("error");
@@ -60,7 +62,7 @@ export function Rsvp() {
           <p className="mt-3 text-base text-ink">
             {content.rsvp.doneNote} {content.date.full}.
           </p>
-          <GuestCard guestName={guestName} />
+          <GuestCard guestName={guestName} slots={guestSlots} />
         </motion.div>
       </section>
     );

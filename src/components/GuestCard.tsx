@@ -16,7 +16,9 @@ import { content } from "@/data/content";
 const W = 1080;
 // Tall enough that the last line of the address clears the bottom edge:
 // the drawing is a fixed sequence, so content always ends around y=1433.
-const H = 1540;
+const BASE_H = 1540;
+/** Extra room when the guest picked at least one time slot. */
+const SLOT_BLOCK = 104;
 
 const INK = "#2c2724";
 const PAPER = "#f7f4ee";
@@ -104,10 +106,15 @@ function tape(
   ctx.restore();
 }
 
-async function draw(canvas: HTMLCanvasElement, guestName: string) {
+async function draw(
+  canvas: HTMLCanvasElement,
+  guestName: string,
+  slots: string[],
+) {
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
 
+  const H = BASE_H + (slots.length ? SLOT_BLOCK : 0);
   canvas.width = W;
   canvas.height = H;
 
@@ -188,8 +195,20 @@ async function draw(canvas: HTMLCanvasElement, guestName: string) {
   ctx.fillText(content.time.range, W - 270, mid + 12);
   ctx.textAlign = "left";
 
+  // The windows this guest said they could make
+  let vy = bandY + bandH;
+  if (slots.length) {
+    vy += 64;
+    centred(ctx, content.card.slotsHeading.toUpperCase(), vy, 24, SANS, {
+      tracking: 6,
+      fill: "#b8944f",
+    });
+    vy += 46;
+    centred(ctx, slots.join("  ·  "), vy, 30, SANS, { tracking: 1 });
+  }
+
   // Venue
-  let vy = bandY + bandH + 76;
+  vy += 76;
   centred(ctx, `📍 ${content.venue.floor}, ${content.venue.name}`, vy, 26, SANS, {
     tracking: 1,
   });
@@ -206,7 +225,13 @@ function loadImage(src: string) {
   });
 }
 
-export function GuestCard({ guestName }: { guestName: string }) {
+export function GuestCard({
+  guestName,
+  slots,
+}: {
+  guestName: string;
+  slots: string[];
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [ready, setReady] = useState(false);
 
@@ -216,13 +241,13 @@ export function GuestCard({ guestName }: { guestName: string }) {
       // Canvas paints with whatever font is loaded at that moment, so wait
       await document.fonts.ready;
       if (cancelled || !canvasRef.current) return;
-      await draw(canvasRef.current, guestName);
+      await draw(canvasRef.current, guestName, slots);
       if (!cancelled) setReady(true);
     })();
     return () => {
       cancelled = true;
     };
-  }, [guestName]);
+  }, [guestName, slots]);
 
   function save() {
     const canvas = canvasRef.current;
