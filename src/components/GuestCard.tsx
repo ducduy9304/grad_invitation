@@ -20,7 +20,7 @@ const BASE_H = 1662;
 /** Extra room when the guest picked at least one time slot. */
 const SLOT_BLOCK = 104;
 /** Extra room again when one of those slots carries a note. */
-const NOTE_LINE = 48;
+const NOTE_LINE = 56;
 
 const INK = "#2c2724";
 const PAPER = "#f7f4ee";
@@ -71,6 +71,26 @@ function centred(
     x += ctx.measureText(ch).width + tracking;
   }
   return fontSize;
+}
+
+/** Centres one line built from runs, so part of it can be bold. */
+function centredRuns(
+  ctx: CanvasRenderingContext2D,
+  y: number,
+  runs: { text: string; font: string; fill?: string }[],
+) {
+  let total = 0;
+  for (const run of runs) {
+    ctx.font = run.font;
+    total += ctx.measureText(run.text).width;
+  }
+  let x = (W - total) / 2;
+  for (const run of runs) {
+    ctx.font = run.font;
+    ctx.fillStyle = run.fill ?? INK;
+    ctx.fillText(run.text, x, y);
+    x += ctx.measureText(run.text).width;
+  }
 }
 
 function roundRect(
@@ -214,16 +234,18 @@ async function draw(
     vy += 46;
     centred(ctx, slots.join("  ·  "), vy, 30, SANS, { tracking: 1 });
     if (note) {
-      vy += 40;
-      centred(ctx, note, vy, 24, SANS, { tracking: 1, fill: "#6b625a" });
+      vy += 48;
+      centred(ctx, `📍 ${note}`, vy, 30, SANS, { tracking: 1 });
     }
   }
 
   // Venue
   vy += 76;
-  centred(ctx, `📍 ${content.venue.floor}, ${content.venue.name}`, vy, 26, SANS, {
-    tracking: 1,
-  });
+  centredRuns(ctx, vy, [
+    { text: "📍 ", font: `26px ${SANS}` },
+    { text: content.venue.floor, font: `600 26px ${SANS}` },
+    { text: `, ${content.venue.name}`, font: `26px ${SANS}` },
+  ]);
   vy += 42;
   centred(ctx, content.venue.lines.join(", "), vy, 26, SANS, { tracking: 1 });
 
@@ -236,7 +258,10 @@ async function draw(
   vy += 46;
   centred(
     ctx,
-    content.contact.people.map((p) => `${p.name} ${p.phone}`).join("   ·   "),
+    content.contact.people
+      // Unspaced digits so the number can be copied straight off the picture
+      .map((p) => `${p.phone.replace(/\s/g, "")} (${p.name})`)
+      .join("   ·   "),
     vy,
     27,
     SANS,

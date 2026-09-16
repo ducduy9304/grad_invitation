@@ -6,7 +6,7 @@ import { content } from "@/data/content";
 import { GuestCard } from "./GuestCard";
 import { Reveal } from "./Reveal";
 
-type Status = "idle" | "sending" | "sent" | "error";
+type Status = "idle" | "sent";
 
 const field =
   "w-full border-b border-ink/20 bg-transparent px-1 py-2.5 text-base text-ink outline-none transition focus:border-gold placeholder:text-ink/35";
@@ -16,11 +16,11 @@ export function Rsvp() {
   // Kept so the card can be addressed to whoever just replied
   const [guestName, setGuestName] = useState("");
   const [guestSlots, setGuestSlots] = useState<string[]>([]);
+  const [saveFailed, setSaveFailed] = useState(false);
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (status === "sending") return;
-    setStatus("sending");
+    if (status === "sent") return;
 
     const form = new FormData(event.currentTarget);
     const name = String(form.get("name") ?? "").trim();
@@ -32,19 +32,29 @@ export function Rsvp() {
       message: form.get("message"),
     };
 
-    try {
-      const res = await fetch("/api/rsvp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      if (!res.ok) throw new Error(await res.text());
-      setGuestName(name);
-      setGuestSlots(data.slots.map(String));
-      setStatus("sent");
-    } catch {
-      setStatus("error");
-    }
+    /*
+     * Show the card straight away instead of waiting on the round trip.
+     * Google Apps Script answers anywhere between 3 and 30 seconds, and the
+     * card is drawn entirely from what the guest just typed, so there is
+     * nothing in it worth waiting for. The write continues underneath; if it
+     * fails the success screen says so rather than pretending it landed.
+     */
+    setGuestName(name);
+    setGuestSlots(data.slots.map(String));
+    setStatus("sent");
+
+    void (async () => {
+      try {
+        const res = await fetch("/api/rsvp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        if (!res.ok) throw new Error(await res.text());
+      } catch {
+        setSaveFailed(true);
+      }
+    })();
   }
 
   if (status === "sent") {
@@ -62,6 +72,11 @@ export function Rsvp() {
           <p className="mt-3 text-base text-ink">
             {content.rsvp.doneNote} {content.date.full}.
           </p>
+          {saveFailed && (
+            <p className="mx-auto mt-5 max-w-md rounded-sm border border-red-700/30 bg-red-50 px-4 py-3 text-sm text-red-800">
+              {content.rsvp.errorText}
+            </p>
+          )}
           <GuestCard guestName={guestName} slots={guestSlots} />
         </motion.div>
       </section>
@@ -170,16 +185,11 @@ export function Rsvp() {
             />
           </label>
 
-          {status === "error" && (
-            <p className="mt-5 text-base text-red-700">{content.rsvp.errorText}</p>
-          )}
-
           <button
             type="submit"
-            disabled={status === "sending"}
             className="mt-8 w-full rounded-full bg-gradient-to-r from-gold to-gold-light py-3.5 text-base font-medium tracking-[0.05em] text-white shadow-sm transition hover:opacity-90 disabled:opacity-60"
           >
-            {status === "sending" ? content.rsvp.submitting : content.rsvp.submit}
+            {content.rsvp.submit}
           </button>
         </form>
       </Reveal>

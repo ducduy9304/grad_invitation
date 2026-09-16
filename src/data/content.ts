@@ -126,13 +126,15 @@ export const content = {
     slotOptions: [
       { label: "15h30 – 16h" },
       { label: "16h – 16h30" },
-      { label: "16h30 – 17h", note: "Khung này mình kéo nhau ra Hồ Con Rùa nha" },
+      { label: "16h30 – 17h", note: "Hồ Con Rùa" },
     ],
     messageLabel: "Nhắn gì đó cho Trân hongg",
     messagePlaceholder: "Tuỳ người đẹp, hông bắt buộc",
     submit: "Gửi tín hiệu tới Trân nhaa",
     submitting: "Đang gửi...",
-    errorText: "Gửi chưa được, người đẹp thử lại giúp Trân nha.",
+    /** The card appears at once; this only warns that the reply did not land. */
+    errorText:
+      "Thiệp của người đẹp xong rồi, nhưng tin nhắn chưa tới được Trân. Nhắn giúp Trân qua số ở trên nha!",
     doneTitle: "Trân nhận được rồi nhaa!",
     doneNote: "Cảm ơn người đẹp nhiều. Hẹn gặp vào",
   },
