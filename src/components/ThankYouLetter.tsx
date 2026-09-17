@@ -56,8 +56,7 @@ export function ThankYouLetter({
         </figure>
       )}
 
-      <p className="mt-8 text-base text-ink-soft">{letter.signOff}</p>
-      <p className="font-display text-foil mt-1 text-3xl">{letter.signature}</p>
+      <p className="font-display text-foil mt-8 text-3xl">{letter.signature}</p>
     </motion.article>
   );
 }

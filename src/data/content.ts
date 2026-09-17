@@ -180,13 +180,11 @@ export const content = {
   thanksLetter: {
     salutation: "Gửi",
     paragraphs: [
-      "Người đẹp bận rồi hả, hông sao đâu nhaa. Đọc được tới dòng này thôi là Trân đã vui lắm rồi á.",
-      "Bốn năm vừa rồi của Trân có những ngày dài ơi là dài, mà nghĩ lại thì toàn nhớ mấy lần có mọi người bên cạnh. Ngày 26.09 này Trân đứng trên đó, trong lòng vẫn có tên người đẹp nha.",
-      "Nợ mình một buổi cà phê nghen, lúc nào cũng được, Trân đợi á.",
+      "Ơ hông ghé được hả 🥺 Hông sao đâu nhaa, Trân hiểu mà.",
+      "Vậy nợ Trân một buổi cà phê nghen, lúc nào cũng được á.",
     ],
     /** Heading above the guest's own words, echoed back to them. */
-    wishHeading: "Lời chúc của người đẹp",
-    signOff: "Thương thật nhiều,",
+    wishHeading: "Người đẹp chúc Trân nè",
     signature: "Trân",
   },
 
