@@ -17,8 +17,10 @@ const W = 1080;
 // Tall enough that the last line of the address clears the bottom edge:
 // the drawing is a fixed sequence, so content always ends around y=1433.
 const BASE_H = 1662;
-/** Extra room when the guest picked at least one time slot. */
+/** Extra room for the heading and first line of picked time slots. */
 const SLOT_BLOCK = 104;
+/** Each further line of slots costs this much. */
+const SLOT_LINE = 46;
 
 const INK = "#2c2724";
 const PAPER = "#f7f4ee";
@@ -91,6 +93,31 @@ function centredRuns(
   }
 }
 
+/**
+ * Packs the picked windows into centred lines that fit the card. One of them
+ * is a sentence rather than a time range, so four ticks on a single line would
+ * shrink the type to nothing.
+ */
+function slotLines(ctx: CanvasRenderingContext2D, slots: string[]) {
+  const separator = "  ·  ";
+  const maxWidth = W - 160;
+  ctx.font = `30px ${SANS}`;
+
+  const lines: string[] = [];
+  let line = "";
+  for (const slot of slots) {
+    const merged = line ? line + separator + slot : slot;
+    if (line && ctx.measureText(merged).width > maxWidth) {
+      lines.push(line);
+      line = slot;
+    } else {
+      line = merged;
+    }
+  }
+  if (line) lines.push(line);
+  return lines;
+}
+
 function roundRect(
   ctx: CanvasRenderingContext2D,
   x: number,
@@ -135,7 +162,9 @@ async function draw(
   if (!ctx) return;
 
   const movedVenue = slots.includes(content.altVenue.triggerSlot);
-  const H = BASE_H + (slots.length ? SLOT_BLOCK : 0);
+  // Measured before the canvas is resized, which resets the drawing state
+  const lines = slots.length ? slotLines(ctx, slots) : [];
+  const H = BASE_H + (lines.length ? SLOT_BLOCK + (lines.length - 1) * SLOT_LINE : 0);
   canvas.width = W;
   canvas.height = H;
 
@@ -218,14 +247,16 @@ async function draw(
 
   // The windows this guest said they could make
   let vy = bandY + bandH;
-  if (slots.length) {
+  if (lines.length) {
     vy += 64;
     centred(ctx, content.card.slotsHeading.toUpperCase(), vy, 24, SANS, {
       tracking: 6,
       fill: "#b8944f",
     });
-    vy += 46;
-    centred(ctx, slots.join("  ·  "), vy, 30, SANS, { tracking: 1 });
+    for (const line of lines) {
+      vy += 46;
+      centred(ctx, line, vy, 30, SANS, { tracking: 1 });
+    }
   }
 
   // Venue. Guests coming for the last window are headed elsewhere.

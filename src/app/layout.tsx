@@ -16,8 +16,9 @@ const beVietnam = Be_Vietnam_Pro({
   display: "swap",
 });
 
-const title = `Thiệp mời tốt nghiệp — ${content.graduateName}`;
-const description = `${content.date.full} · ${content.time.range} · ${content.venue.name}`;
+// Short name, and no subtitle: the preview card in a chat app is two lines of
+// room, and the photo already carries the rest.
+const title = `Thiệp mời tốt nghiệp — ${content.shortName}`;
 
 // Real domain after deploying, so link previews resolve the OG image absolutely
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
@@ -25,10 +26,8 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title,
-  description,
   openGraph: {
     title,
-    description,
     type: "website",
     images: ["/images/og.jpg"],
   },

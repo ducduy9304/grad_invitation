@@ -6,8 +6,10 @@
  */
 
 export const content = {
-  /** Full name: page title, footer, and the wax-seal initial. */
+  /** Full name: footer and the wax-seal initial. */
   graduateName: "Nguyễn Ngọc Huyền Trân",
+  /** Short name for the link preview, where the full one wraps to three lines. */
+  shortName: "Huyền Trân",
   /** The line on the card that slides out of the envelope. */
   envelopeGreeting: "Trân xin chào",
   /** Small line above the title. */
@@ -131,8 +133,16 @@ export const content = {
     attendingOptions: ["Chắc chắn rùi", "Hông được rùi"],
     /** Guests can tick more than one slot. */
     slotLabel: "Người đẹp ghé được khung giờ nào zaa? (chọn nhiều cũng oki)",
-    /** Guests may tick several. */
-    slotOptions: ["15h30 – 16h", "16h – 16h30", "16h30 – 17h"],
+    /**
+     * Guests may tick several. The first one is the ceremony itself, which
+     * runs before the reception windows and so is spelled out.
+     */
+    slotOptions: [
+      "Dự lễ tốt nghiệp (13h – 16h)",
+      "15h30 – 16h",
+      "16h – 16h30",
+      "16h30 – 17h",
+    ],
     messageLabel: "Nhắn gì đó cho Trân hongg",
     messagePlaceholder: "Tuỳ người đẹp, hông bắt buộc",
     submit: "Gửi tín hiệu tới Trân nhaa",
