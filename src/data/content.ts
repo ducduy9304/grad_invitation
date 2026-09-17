@@ -180,7 +180,7 @@ export const content = {
   thanksLetter: {
     salutation: "Gửi",
     paragraphs: [
-      "Ơ hông ghé được hả 🥺 Hông sao đâu nhaa, Trân hiểu mà.",
+      "Ơ hông ghé được hả 🥺 Hông sao đâu nhaa.",
       "Vậy nợ Trân một buổi cà phê nghen, lúc nào cũng được á.",
     ],
     /** Heading above the guest's own words, echoed back to them. */
