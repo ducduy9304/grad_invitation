@@ -156,7 +156,7 @@ export const content = {
 
   /** The personalised card drawn after someone RSVPs. */
   card: {
-    invitePrefix: "Thương mời",
+    invitePrefix: "Thương mời Anh/Chị/Bạn",
     slotsHeading: "Khung giờ bạn ghé",
     contactHeading: "Liên hệ",
     saveLabel: "Lưu thiệp về máy",
