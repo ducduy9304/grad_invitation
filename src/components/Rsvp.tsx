@@ -6,6 +6,7 @@ import { content } from "@/data/content";
 import { flush, send } from "@/lib/rsvp-outbox";
 import { GuestCard } from "./GuestCard";
 import { Reveal } from "./Reveal";
+import { ThankYouLetter } from "./ThankYouLetter";
 
 type Status = "idle" | "sent";
 
@@ -17,7 +18,15 @@ export function Rsvp() {
   // Kept so the card can be addressed to whoever just replied
   const [guestName, setGuestName] = useState("");
   const [guestSlots, setGuestSlots] = useState<string[]>([]);
+  const [guestWish, setGuestWish] = useState("");
   const [saveFailed, setSaveFailed] = useState(false);
+  /*
+   * Controlled, because the rest of the form follows it: someone who cannot
+   * come is asked for a wish instead of a time window, and ends on a letter
+   * rather than an invitation they have no use for.
+   */
+  const [attending, setAttending] = useState(content.rsvp.attendingOptions[0]);
+  const declined = attending === content.rsvp.declineOption;
 
   // A reply a previous visit could not deliver gets another go
   useEffect(() => {
@@ -32,12 +41,13 @@ export function Rsvp() {
     const name = String(form.get("name") ?? "").trim();
     // Identifies this reply so a retry cannot store it twice
     const submissionId = crypto.randomUUID();
+    const message = String(form.get("message") ?? "").trim();
     const data = {
       name,
-      attending: form.get("attending"),
+      attending,
       // Repeated field: getAll, because entries() would keep only the last tick
       slots: form.getAll("slots"),
-      message: form.get("message"),
+      message,
     };
 
     /*
@@ -49,6 +59,7 @@ export function Rsvp() {
      */
     setGuestName(name);
     setGuestSlots(data.slots.map(String));
+    setGuestWish(message);
     setStatus("sent");
 
     void send({ ...data, submissionId }).then((stored) => {
@@ -67,16 +78,24 @@ export function Rsvp() {
           <p className="text-4xl" aria-hidden>
             💌
           </p>
-          <h2 className="text-foil mt-4 text-3xl font-semibold">{content.rsvp.doneTitle}</h2>
-          <p className="mt-3 text-base text-ink">
-            {content.rsvp.doneNote} {content.date.full}.
-          </p>
+          <h2 className="text-foil mt-4 text-3xl font-semibold">
+            {declined ? content.rsvp.doneTitleAway : content.rsvp.doneTitle}
+          </h2>
+          {!declined && (
+            <p className="mt-3 text-base text-ink">
+              {content.rsvp.doneNote} {content.date.full}.
+            </p>
+          )}
           {saveFailed && (
             <p className="mx-auto mt-5 max-w-md rounded-sm border border-red-700/30 bg-red-50 px-4 py-3 text-sm text-red-800">
               {content.rsvp.errorText}
             </p>
           )}
-          <GuestCard guestName={guestName} slots={guestSlots} />
+          {declined ? (
+            <ThankYouLetter guestName={guestName} wish={guestWish} />
+          ) : (
+            <GuestCard guestName={guestName} slots={guestSlots} />
+          )}
         </motion.div>
       </section>
     );
@@ -88,7 +107,6 @@ export function Rsvp() {
         <h2 className="text-center text-2xl font-semibold tracking-wide text-ink sm:text-3xl">
           {content.rsvp.heading}
         </h2>
-
       </Reveal>
 
       <Reveal delay={0.1}>
@@ -118,7 +136,7 @@ export function Rsvp() {
               {content.rsvp.attendingLabel}
             </legend>
             <div className="mt-3 space-y-2">
-              {content.rsvp.attendingOptions.map((option, i) => (
+              {content.rsvp.attendingOptions.map((option) => (
                 <label
                   key={option}
                   className="flex cursor-pointer items-center gap-3 text-base text-ink"
@@ -127,8 +145,8 @@ export function Rsvp() {
                     type="radio"
                     name="attending"
                     value={option}
-                    required
-                    defaultChecked={i === 0}
+                    checked={attending === option}
+                    onChange={() => setAttending(option)}
                     className="h-4.5 w-4.5 accent-[#b8944f]"
                   />
                   {option}
@@ -137,37 +155,45 @@ export function Rsvp() {
             </div>
           </fieldset>
 
-          <fieldset className="mt-7">
-            <legend className="text-sm tracking-[0.18em] text-ink uppercase">
-              {content.rsvp.slotLabel}
-            </legend>
-            <div className="mt-3 space-y-2">
-              {content.rsvp.slotOptions.map((slot) => (
-                <label
-                  key={slot}
-                  className="flex cursor-pointer items-center gap-3 text-base text-ink"
-                >
-                  <input
-                    type="checkbox"
-                    name="slots"
-                    value={slot}
-                    className="h-4.5 w-4.5 accent-[#b8944f]"
-                  />
-                  {slot}
-                </label>
-              ))}
-            </div>
-          </fieldset>
+          {/* Unmounted rather than hidden, so ticks made before switching
+              to "cannot come" are not submitted along with the reply */}
+          {!declined && (
+            <fieldset className="mt-7">
+              <legend className="text-sm tracking-[0.18em] text-ink uppercase">
+                {content.rsvp.slotLabel}
+              </legend>
+              <div className="mt-3 space-y-2">
+                {content.rsvp.slotOptions.map((slot) => (
+                  <label
+                    key={slot}
+                    className="flex cursor-pointer items-center gap-3 text-base text-ink"
+                  >
+                    <input
+                      type="checkbox"
+                      name="slots"
+                      value={slot}
+                      className="h-4.5 w-4.5 accent-[#b8944f]"
+                    />
+                    {slot}
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+          )}
 
           <label className="mt-7 block">
             <span className="text-sm tracking-[0.18em] text-ink uppercase">
-              {content.rsvp.messageLabel}
+              {declined ? content.rsvp.wishLabel : content.rsvp.messageLabel}
             </span>
             <textarea
               name="message"
               rows={1}
               maxLength={500}
-              placeholder={content.rsvp.messagePlaceholder}
+              placeholder={
+                declined
+                  ? content.rsvp.wishPlaceholder
+                  : content.rsvp.messagePlaceholder
+              }
               // Starts one line tall and grows with the text. overflow-hidden
               // keeps scrollHeight honest, otherwise it stops at the box size.
               onInput={(event) => {

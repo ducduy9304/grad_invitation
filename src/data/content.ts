@@ -131,6 +131,11 @@ export const content = {
     namePlaceholder: "Mình là...",
     attendingLabel: "Người đẹp sẽ đến chung vui cùng Trân đúng hông?",
     attendingOptions: ["Chắc chắn rùi", "Hông được rùi"],
+    /**
+     * The option that means "I cannot make it". Picking it drops the time
+     * windows from the form and ends on a letter instead of an invitation.
+     */
+    declineOption: "Hông được rùi",
     /** Guests can tick more than one slot. */
     slotLabel: "Người đẹp ghé được khung giờ nào zaa? (chọn nhiều cũng oki)",
     /**
@@ -145,6 +150,9 @@ export const content = {
     ],
     messageLabel: "Nhắn gì đó cho Trân hongg",
     messagePlaceholder: "Tuỳ người đẹp, hông bắt buộc",
+    /** Replaces the two lines above for someone who cannot come. */
+    wishLabel: "Gửi Trân một lời chúc nhaa",
+    wishPlaceholder: "Chúc Trân...",
     submit: "Gửi tín hiệu tới Trân nhaa",
     submitting: "Đang gửi...",
     /** The card appears at once; this only warns that the reply did not land. */
@@ -152,6 +160,8 @@ export const content = {
       "Thiệp của người đẹp xong rồi, nhưng tin nhắn chưa tới được Trân. Nhắn giúp Trân qua số ở trên nha!",
     doneTitle: "Trân nhận được rồi nhaa!",
     doneNote: "Cảm ơn người đẹp nhiều. Hẹn gặp vào",
+    /** The letter below says the rest, so this one stands alone. */
+    doneTitleAway: "Trân đọc được rồi nhaa!",
   },
 
   /** The personalised card drawn after someone RSVPs. */
@@ -161,6 +171,23 @@ export const content = {
     contactHeading: "Liên hệ",
     saveLabel: "Lưu thiệp về máy",
     mapLabel: "Xem đường đi",
+  },
+
+  /**
+   * Handed to a guest who cannot come, in place of the invitation card.
+   * Nobody wants a picture of a party they are missing.
+   */
+  thanksLetter: {
+    salutation: "Gửi",
+    paragraphs: [
+      "Người đẹp bận rồi hả, hông sao đâu nhaa. Đọc được tới dòng này thôi là Trân đã vui lắm rồi á.",
+      "Bốn năm vừa rồi của Trân có những ngày dài ơi là dài, mà nghĩ lại thì toàn nhớ mấy lần có mọi người bên cạnh. Ngày 26.09 này Trân đứng trên đó, trong lòng vẫn có tên người đẹp nha.",
+      "Nợ mình một buổi cà phê nghen, lúc nào cũng được, Trân đợi á.",
+    ],
+    /** Heading above the guest's own words, echoed back to them. */
+    wishHeading: "Lời chúc của người đẹp",
+    signOff: "Thương thật nhiều,",
+    signature: "Trân",
   },
 
   footer: {
