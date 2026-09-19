@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Playfair_Display, Be_Vietnam_Pro } from "next/font/google";
 import { content } from "@/data/content";
 import "./globals.css";
@@ -42,7 +43,18 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="vi" className={`${playfair.variable} ${beVietnam.variable}`}>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        {children}
+        {/*
+         * Visit counting, read from the Vercel dashboard. No cookie and no
+         * local storage, so there is nothing to disclose to a guest and
+         * nothing of theirs left behind: a visit is one hashed, day-scoped
+         * number that cannot be traced back to a person or joined to the RSVP
+         * sheet. It answers how many opened the link, from which app, on what
+         * kind of device -- never who.
+         */}
+        <Analytics />
+      </body>
     </html>
   );
 }
