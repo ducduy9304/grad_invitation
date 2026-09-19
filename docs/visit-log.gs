@@ -10,16 +10,18 @@ var HEADERS = [
   'Timestamp',   // when the page was opened
   'Device',      // random name for a browser, not for a person
   'Visit',       // 1 the first time, 2 the next, and so on
+  'Seconds',     // how long before they looked away; filled in as they leave
   'Source',      // the app or site the link was followed from
   'Type',        // phone or computer
+  'Model',       // Android admits to one, an iPhone never does
   'OS',
   'Browser',
-  'Place',       // town and country, resolved by Vercel; no address is stored
+  'Place',       // town or region and country; no address is stored
   'Invite',      // filled only when the link was sent to one named person
 ];
 
 /** Pixel widths per column, in the same order as HEADERS. */
-var WIDTHS = [150, 110, 60, 170, 100, 90, 110, 190, 130];
+var WIDTHS = [150, 110, 60, 80, 170, 100, 180, 110, 110, 190, 130];
 
 var COLOURS = {
   header: '#b8944f',      // gold, same as the invitation
@@ -48,12 +50,20 @@ function doPost(e) {
 
     var data = JSON.parse(e.postData.contents);
 
+    // The second beacon, sent as they leave, belongs on the row the first one
+    // already wrote rather than on a row of its own.
+    if (data.close) {
+      return json({ ok: true, filled: fillSeconds_(sheet, data) });
+    }
+
     sheet.appendRow([
       new Date(),
       safe_(data.device),
       Number(data.visit) || 1,
+      '',
       safe_(data.from),
       safe_(data.kind),
+      safe_(data.model),
       safe_(data.os),
       safe_(data.browser),
       safe_(data.place),
@@ -67,6 +77,38 @@ function doPost(e) {
   } finally {
     lock.releaseLock();
   }
+}
+
+/**
+ * Writes how long someone stayed onto their own most recent row.
+ *
+ * It searches upwards for the last row of that browser still missing a
+ * reading, so a visit logged minutes ago is filled correctly even while other
+ * people are arriving. Two tabs of the same browser at once could land on each
+ * other's row; nothing here is worth more machinery than that.
+ */
+function fillSeconds_(sheet, data) {
+  var lastRow = sheet.getLastRow();
+  if (lastRow < 2) return false;
+
+  var deviceCol = HEADERS.indexOf('Device') + 1;
+  var secondsCol = HEADERS.indexOf('Seconds') + 1;
+  var device = String(data.device || '');
+  if (!device) return false;
+
+  // Only the recent tail is worth searching; a stale beacon is not worth
+  // reading the whole sheet for.
+  var from = Math.max(2, lastRow - 200);
+  var devices = sheet.getRange(from, deviceCol, lastRow - from + 1, 1).getValues();
+  var seconds = sheet.getRange(from, secondsCol, lastRow - from + 1, 1).getValues();
+
+  for (var i = devices.length - 1; i >= 0; i--) {
+    if (String(devices[i][0]) === device && seconds[i][0] === '') {
+      sheet.getRange(from + i, secondsCol).setValue(Number(data.seconds) || 0);
+      return true;
+    }
+  }
+  return false;
 }
 
 /**
@@ -167,6 +209,10 @@ function styleHeader_(sheet) {
     sheet.setColumnWidth(i + 1, WIDTHS[i]);
   }
 
+  // Reveal everything first: a sheet written by an earlier version hid the
+  // columns that new fields now occupy, and they would stay hidden.
+  sheet.showColumns(1, sheet.getMaxColumns());
+
   var extra = sheet.getMaxColumns() - HEADERS.length;
   if (extra > 0) {
     sheet.hideColumns(HEADERS.length + 1, extra);
@@ -186,6 +232,7 @@ function styleRow_(sheet, row) {
 
   sheet.getRange(row, 1).setNumberFormat('dd/MM/yyyy  HH:mm');
   sheet.getRange(row, visitCol).setHorizontalAlignment('center');
+  sheet.getRange(row, HEADERS.indexOf('Seconds') + 1).setHorizontalAlignment('center');
   if (repeat) {
     sheet.getRange(row, visitCol).setFontWeight('bold');
   }

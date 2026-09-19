@@ -104,10 +104,34 @@ its own.
    and deploy it as a web app exactly as in the RSVP section above.
 3. Put the `/exec` URL in `VISIT_LOG_URL`, locally and in Vercel, and redeploy.
 
+> **Updating the script later**: paste the new [`docs/visit-log.gs`](docs/visit-log.gs),
+> then **Deploy → Manage deployments → edit → Version: New version**, which
+> keeps the same `/exec` URL. If the columns changed, run `formatAll` once to
+> rewrite the header in place; it does not delete rows.
+
 A row records the time, a random name for the browser, how many times that
-browser has opened the page, where the link was followed from, phone or
-computer, OS, browser, and the town Vercel resolves from the request. `Place`
-stays empty in local development, because those headers only exist on Vercel.
+browser has opened the page, how many seconds before they looked away, where
+the link was followed from, phone or computer, the model, OS, browser, and the
+place Vercel resolves from the request.
+
+`Seconds` is written by a second beacon as the visitor leaves, onto the row the
+first one wrote. It measures the moment they first looked away, so a phone that
+locks or switches apps still reports; a tab left open all afternoon does not
+inflate it.
+
+`Model` is a real one on Android -- the phone will say so when asked directly,
+even though it is kept out of the user agent. Apple publishes nothing, so an
+iPhone is only ever `iPhone` plus its iOS version. Part numbers like `SM-A546E`
+are named through `MODELS` in [`src/app/api/visit/route.ts`](src/app/api/visit/route.ts);
+unknown ones pass through as the code, and the list is easy to extend.
+
+`Place` is the town, or the region code when a mobile network resolves to no
+town, and the country. It stays empty in local development, because those
+headers only exist on Vercel. Vietnamese mobile IPs often resolve to the wrong
+city or to none at all, so read it as a rough spread, not per visitor.
+
+Crawlers, link-preview fetchers and Vercel's own thumbnail renderer are dropped
+rather than logged, so the counts are people.
 
 Run `summarise` from the editor's function list to collapse the rows into one
 line per browser, most-opened first, on a second `Devices` sheet.
