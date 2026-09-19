@@ -85,6 +85,43 @@ restyle the whole sheet in place.
 > deployments → edit → Version: New version**, otherwise `/exec` keeps running
 > the old code.
 
+## See who opened the invitation
+
+Two separate things, kept separate on purpose.
+
+**Totals** come from Vercel Web Analytics, already wired up in
+[`src/app/layout.tsx`](src/app/layout.tsx). Turn it on under the project's
+**Analytics** tab and redeploy. It stores no cookie and nothing on the
+visitor's device, and reports visitors, referrers, device and country.
+
+**Detail** comes from the visit log: one row per opening, in a spreadsheet of
+its own.
+
+1. Create a **new** sheet at [sheets.new](https://sheets.new). Do not reuse the
+   RSVP one; it is live, and a second script on it would mean redeploying the
+   first.
+2. **Extensions → Apps Script**, paste [`docs/visit-log.gs`](docs/visit-log.gs),
+   and deploy it as a web app exactly as in the RSVP section above.
+3. Put the `/exec` URL in `VISIT_LOG_URL`, locally and in Vercel, and redeploy.
+
+A row records the time, a random name for the browser, how many times that
+browser has opened the page, where the link was followed from, phone or
+computer, OS, browser, and the town Vercel resolves from the request. `Place`
+stays empty in local development, because those headers only exist on Vercel.
+
+Run `summarise` from the editor's function list to collapse the rows into one
+line per browser, most-opened first, on a second `Devices` sheet.
+
+The name identifies a browser, never a person: the same phone in Chrome and in
+Safari counts twice, and clearing site data starts a new one. **A link posted
+in public cannot be made to say who clicked it.** If you need that, send each
+person their own link with `?k=their-name` and it lands in the `Invite`
+column — that is the only way a name ever appears here.
+
+No IP address is stored, only the town Vercel has already resolved.
+`VISIT_LOG_URL` is server-only, so the address of the log never reaches a
+guest's browser.
+
 ## Deploy to Vercel
 
 1. Push to GitHub and import the repository at [vercel.com/new](https://vercel.com/new).
@@ -94,6 +131,7 @@ restyle the whole sheet in place.
    | Name | Value |
    | --- | --- |
    | `GOOGLE_SCRIPT_URL` | the `/exec` URL |
+   | `VISIT_LOG_URL` | the visit log's `/exec` URL, if you set one up |
    | `NEXT_PUBLIC_SITE_URL` | the deployed origin, no trailing slash |
 
 3. **Redeploy.** Environment variables only apply to new builds.
